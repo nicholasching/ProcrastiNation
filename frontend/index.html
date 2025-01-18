@@ -22,7 +22,7 @@
 </head>
 <body>
 
-  <div class="server-container" id="serverContainer">
+  <div class="server-container server-not-visible" id="serverContainer">
     <div class="options-container">
       <h2 class="create-text" id="createText">Create Server</h2>
       <h2 class="join-text">Join Server</h2>
@@ -37,7 +37,7 @@
     </div>
   </div>
 
-  <div class="main-container" id="mainContainer" style="display:none;">
+  <div class="main-container" id="mainContainer">
     <div class="header-container">
       <!-- <button id="nicksButton">Nick's Button</button> -->
       <div>
@@ -54,7 +54,7 @@
         <div class="username-setting-element tile" id="settingsButton">
           <p><i class="fa-solid fa-gear"></i></p>
         </div>
-        <div class="username-setting-element tile">
+        <div class="username-setting-element tile" id="profileButton">
           <p><i class="fa-solid fa-user"></i> Username</p>
         </div>
       </div>
@@ -110,15 +110,6 @@
 
     <script>
 
-    const createText = document.getElementById("createText");
-    const serverContainer = document.getElementById("serverContainer");
-    const mainContainer = document.getElementById("mainContainer");
-
-    createText.addEventListener("click", () => {
-      serverContainer.style.display = "none";
-      mainContainer.style.display = "block";
-    });
-
     const settingsButton = document.getElementById("settingsButton");
     const settingsMenu = document.getElementById("settingsMenu");
 
@@ -146,7 +137,6 @@
       lightModeIcon.classList.toggle("light-mode-text");
     });
 
-
     const theme1 = document.getElementById("theme1");
     const theme2 = document.getElementById("theme2");
     const theme3 = document.getElementById("theme3");
@@ -169,6 +159,14 @@
 
     themeButtons.forEach(button => {
       button.addEventListener('click', displayChart);
+    });
+
+    const profileButton = document.getElementById("profileButton");
+    const serverContainer = document.getElementById("serverContainer");
+
+    profileButton.addEventListener("click", () => {
+      serverContainer.classList.toggle("server-visible");
+      serverContainer.classList.toggle("server-not-visible");
     });
 
     const person1 = document.getElementById("person1");

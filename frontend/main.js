@@ -1,7 +1,6 @@
 import { app, BrowserWindow, ipcMain, screen } from "electron";
 import SessionTracker from "./tracker.js";
 
-
 let sessionTracker = new SessionTracker();
 let mainWindow;
 let intervalId = null;
