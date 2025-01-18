@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UofT Hacks 12</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+</head>
+<body>
+
+
+
+    <h1>DASHBOARD</h1>
+    <div class="dashboard-container">
+        <canvas id="myChart" class="bar-chart"></canvas>
+        <div class="box-container">
+            <div class="box">
+                <h2>30% Whatever</h2>
+            </div>
+            <div class="box">
+                <h2>30% Whatever</h2>
+            </div>
+            <div class="box">
+                <h2>30% Whatever</h2>
+            </div>
+        </div>
+        <div class="leaderboard-container">
+            <h2>Most Productive Friends Today</h2>
+            <div class="person"><i class="fa-solid fa-user"></i> John</div>
+            <div class="person"><i class="fa-solid fa-user"></i> Bob</div>
+            <div class="person"><i class="fa-solid fa-user"></i> Dan</div>
+            <div class="person"><i class="fa-solid fa-user"></i> Sam</div>
+        </div>
+    </div>
+
+
+    <script>
+        const xValues = [100,200,300,400,500,600,700,800,900,1000];
+
+        new Chart("myChart", {
+        type: "line",
+        data: {
+            labels: xValues,
+            datasets: [{
+            data: [860,1140,1060,1060,1070,1110,1330,2210,7830,2478],
+            borderColor: "black",
+            fill: false,
+            pointRadius: 0,
+            tension: 0.5
+            },{
+            data: [1600,1700,1700,1900,2000,2700,4000,5000,6000,7000],
+            borderColor: "black",
+            fill: false,
+            pointRadius: 0,
+            tension: 0.5
+            },{
+            data: [300,700,2000,5000,6000,4000,2000,1000,200,100],
+            borderColor: "black",
+            fill: false,
+            pointRadius: 0,
+            tension: 0.5
+            }]
+        },
+        options: {
+            legend: {display: false}
+        }
+        });
+    </script>
+    
+</body>
+</html>
