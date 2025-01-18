@@ -1,5 +1,7 @@
 import Store from "electron-store";
 import { activeWindow } from "get-windows";
+// import { io } from 'socket.io-client';
+
 const store = new Store();
 
 function isProductive(result) {
@@ -65,13 +67,13 @@ class SessionTracker {
     this.prevProductive = false;
 
     // Add socket and session tracking
-    this.socket = io('http://localhost:5000');
-    this.sessionId = sessionId;
-    this.userId = userId;
+    // this.socket = io('http://localhost:5000');
+    // this.sessionId = sessionId;
+    // this.userId = userId;
     
-    // Productivity tracking
-    this.productiveStreak = 0;
-    this.productivityThreshold = 10; // 10sec
+    // // Productivity tracking
+    // this.productiveStreak = 0;
+    // this.productivityThreshold = 10; // 10sec
     }
 
     startSession() {
@@ -88,33 +90,33 @@ class SessionTracker {
         if (!result) return;
   
         const currentApp = result.owner.name;
-        this.currentProductive = isProductive(result);
+        // this.currentProductive = isProductive(result);
   
-        if (this.currentProductive) {
-          this.productiveStreak++;
-          this.activeTime++;
+        // if (this.currentProductive) {
+          // this.productiveStreak++;
+          // this.activeTime++;
           
-          // Emit productivity update when threshold is reached
-          if (this.productiveStreak >= this.productivityThreshold) {
-            this.socket.emit('productivity_update', {
-              session_id: this.sessionId,
-              user_id: this.userId,
-              productive_time: this.productiveStreak,
-              app_name: currentApp
-            });
-            // Reset streak after broadcasting
-            this.productiveStreak = 0;
-          }
-        } else {
-          this.productiveStreak = 0;
-          this.currentDowntime++;
-          if (this.currentDowntime > this.maxDowntime) {
-            this.maxDowntime = this.currentDowntime;
-          }
-        }
+        //   // Emit productivity update when threshold is reached
+        //   if (this.productiveStreak >= this.productivityThreshold) {
+        //     this.socket.emit('productivity_update', {
+        //       session_id: this.sessionId,
+        //       user_id: this.userId,
+        //       productive_time: this.productiveStreak,
+        //       app_name: currentApp
+        //     });
+        //     // Reset streak after broadcasting
+        //     this.productiveStreak = 0;
+        //   }
+        // } else {
+        //   this.productiveStreak = 0;
+        //   this.currentDowntime++;
+        //   if (this.currentDowntime > this.maxDowntime) {
+        //     this.maxDowntime = this.currentDowntime;
+        //   }
+        // }
         
-      this.currentProductive = isProductive(result);
-      console.log(`Current app: ${currentApp}, URL: ${result.url}, Productive: ${this.currentProductive}`);
+      // this.currentProductive = isProductive(result);
+      // console.log(`Current app: ${currentApp}, URL: ${result.url}, Productive: ${this.currentProductive}`);
 
       // Update activity log
       if (this.previousApp && this.previousApp !== currentApp) {
