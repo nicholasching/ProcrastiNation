@@ -12,8 +12,10 @@
     "electron": "^34.0.0"
   },
   "dependencies": {
+    "audic": "^3.0.2",
     "electron-store": "^10.0.0",
-    "get-windows": "^9.2.0"
+    "get-windows": "^9.2.0",
+    "sound-play": "^1.1.0"
   },
   "type": "module"
 }
