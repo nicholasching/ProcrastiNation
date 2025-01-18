@@ -21,6 +21,10 @@ app.whenReady().then(() => {
 // Listen for "start-session" from renderer process
 ipcMain.on("start-session", () => {
   sessionTracker.startSession();
+  // Generate checkpoints every 10 seconds
+  // intervalId = setInterval(() => {
+  //   sessionTracker.generateCheckpoint();
+  // }, 100000);
 });
 
 // Listen for "end-session" from renderer process
@@ -32,10 +36,11 @@ ipcMain.on("end-session", () => {
   clearInterval(intervalId);
 });
 
-// Generate checkpoints every 10 seconds
-intervalId = setInterval(() => {
-  sessionTracker.generateCheckpoint();
-}, 10000);
+// Listen for "clear-session" from renderer process
+ipcMain.on("clear-session", () => {
+  sessionTracker.clearData();
+  console.log("Data cleared!");
+});
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
