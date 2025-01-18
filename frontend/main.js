@@ -6,6 +6,7 @@ let sessionTracker = new SessionTracker();
 let mainWindow;
 let intervalId = null;
 let booWindow = null;
+let notifWindow
 let minimizedTime = null; // Track when the main window was minimized
 let booTimeout = null; // Store the timeout ID
 
@@ -40,6 +41,34 @@ function createBooWindow() {
   })
 }
 
+function createNotifWindow(){
+  const primaryDisplay = screen.getPrimaryDisplay();
+  const { width, height } = primaryDisplay.workAreaSize;
+  notifWindow = new BrowserWindow({
+    width: width/4,
+    height: height/1.5,
+    frame: false,
+    alwaysOnTop: true,
+    skipTaskbar: true,
+    transparent: true,
+    hasShadow: false,
+    show: false,
+    webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false,
+    },
+  });
+  notifWindow.loadFile("notif.html");
+
+  notifWindow.once('ready-to-show', () => {
+      notifWindow.show();
+  });
+
+  notifWindow.on('closed', () => {
+      notifWindow = null; // Clear reference to boo window when it's closed
+  })
+}
+
 function checkMinimize() {
   if (mainWindow && mainWindow.isMinimized()) {
     if (!minimizedTime) {
@@ -48,6 +77,7 @@ function checkMinimize() {
       //Check if minimized for 3 seconds, if so make the boo window
     if (Date.now() - minimizedTime >= 3000 && !booWindow) {
       createBooWindow();
+      createNotifWindow();
 
     }
   } else {
