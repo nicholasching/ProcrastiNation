@@ -1,0 +1,30 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+    background-color: transparent;
+}
+
+@keyframes pulse-glow {
+    from {
+        box-shadow: inset 0 0 0px 0px red;
+    }
+    50% {
+        box-shadow: inset 0 0 30px 15px red;
+    }
+    to {
+        box-shadow: inset 0 0 0px 0px red;
+    }
+}
+
+.glow {
+    position: fixed;
+    width: 100%;
+    top: 0;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 10000;
+    box-shadow: inset 0 0 20px 10px red;
+    animation: pulse-glow 2s infinite ease-in-out;
+}
