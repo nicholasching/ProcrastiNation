@@ -1,5 +1,6 @@
 import { app, BrowserWindow, ipcMain, screen } from "electron";
 import SessionTracker from "./tracker.js";
+import WebSocketService from './websocket.js';
 
 let sessionTracker = new SessionTracker();
 let mainWindow;
