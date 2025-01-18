@@ -1,7 +1,9 @@
 import { app, BrowserWindow, ipcMain } from "electron";
-import { startSession, endSession } from "./monitor.js";
+import SessionTracker from "./tracker.js";
+let sessionTracker = new SessionTracker();
 
 let mainWindow;
+let intervalId = null;
 
 app.whenReady().then(() => {
   mainWindow = new BrowserWindow({
@@ -18,13 +20,22 @@ app.whenReady().then(() => {
 
 // Listen for "start-session" from renderer process
 ipcMain.on("start-session", () => {
-  startSession();
+  sessionTracker.startSession();
 });
 
 // Listen for "end-session" from renderer process
 ipcMain.on("end-session", () => {
-  endSession();
+  sessionTracker.endSession();
+  const {activityLog, checkpoints} = sessionTracker.loadData();
+  console.log("Final Activity Log:", activityLog); 
+  console.log("Final Checkpoints:", checkpoints);
+  clearInterval(intervalId);
 });
+
+// Generate checkpoints every 10 seconds
+intervalId = setInterval(() => {
+  sessionTracker.generateCheckpoint();
+}, 10000);
 
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
