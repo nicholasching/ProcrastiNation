@@ -3,6 +3,7 @@ import redis
 import json
 import uuid
 from datetime import datetime
+from firebase_admin import firestore 
 
 # Initialize Redis connection
 redis_client = redis.StrictRedis(host='localhost', port=6379, db=0, decode_responses=True)
@@ -17,6 +18,19 @@ USER_PREFIX = "session:user_id:"
 # Helper function to save data to Firebase (placeholder)
 def save_to_firebase(data):
     print("Placeholder: Saving to Firebase", data)
+    db = firestore.client()
+    activity_ref = db.collection('activity')
+    if isinstance(data, dict):
+        for user_id, user_data in data.items():
+            doc_ref = activity_ref.document(user_id)
+            
+            save_data = {
+                'user_id': user_id,
+                'last_updated': datetime.utcnow(),
+                'session_data': user_data
+            }
+            
+            doc_ref.set(save_data, merge=True)
 
 @redis_routes.route('/start_session', methods=['POST'])
 def start_session():

@@ -2,6 +2,7 @@ from flask import Blueprint, request, redirect, session, url_for, jsonify
 from firebase_admin import auth as firebase_auth
 from firebase_admin import firestore
 from datetime import datetime
+import re
 
 auth_bp = Blueprint("auth", __name__)
 auth0 = None 
@@ -31,7 +32,7 @@ def callback():
         user_data = {
             'name': user_info.get('name'),
             'email': user_info.get('email'),
-            'auth0_id': user_info['sub'].replace('auth0|', '').strip(),
+            'auth0_id': re.sub(r'(auth0|github|google-oauth-2)\|', '', user_info['sub']).strip(),
             'created_at': datetime.now(),
             'last_login': datetime.now()
         }
