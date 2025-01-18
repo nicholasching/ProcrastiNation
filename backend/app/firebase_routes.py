@@ -52,6 +52,8 @@ def create_activity():
         activity_data = {
             'user_id': data.get('user_id'),
             'productive_time': firestore.Increment(data.get('productive_time', 0)),
+            'max_downtime': firestore.Increment(data.get('max_downtime', 0)),
+            'unproductive_durations': firestore.Increment(data.get('unproductive_durations', 0)),
             'updated_at': datetime.now()
         }
         
@@ -63,6 +65,7 @@ def create_activity():
         }), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+
 
 
 @firebase_bp.route('/activity/<user_id>', methods=['GET'])
