@@ -1,4 +1,3 @@
-// websocket-service.js
 import io from 'socket.io-client';
 
 class WebSocketService {
