@@ -1,5 +1,6 @@
 from ai import Ai
 
 roaster = Ai()
+roaster.loadProfiles()
 
-print(roaster.runIdent(1,"Dylan",150,"Instagram"))
+print(roaster.genIns(0,"Dylan",150,"Instagram", 0))
