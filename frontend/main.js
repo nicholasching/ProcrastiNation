@@ -1,9 +1,11 @@
 import { app, BrowserWindow, ipcMain } from "electron";
-import { playAudioFile } from 'audic';
 import SessionTracker from "./tracker.js";
+import WebSocketService from './websocket';
+
 let sessionTracker = new SessionTracker();
 
 let mainWindow;
+let wsService;
 let intervalId = null;
 
 app.whenReady().then(() => {
@@ -18,6 +20,8 @@ app.whenReady().then(() => {
 
   mainWindow.loadFile("index.html");
 });
+
+wsService = new WebSocketService();
 
 // Listen for "start-session" from renderer process
 ipcMain.on("start-session", () => {
@@ -43,9 +47,8 @@ ipcMain.on("clear-session", () => {
   console.log("Data cleared!");
 });
 
-ipcMain.on("nick-button", async () => {
-  await playAudioFile('audio/test.mp3');
-  console.log("Run")
+ipcMain.on("checkpoint-update", (event, checkpoint) => {
+  wsService.updateCheckpoint(checkpoint);
 });
 
 app.on("window-all-closed", () => {
