@@ -58,6 +58,9 @@ def create_app():
 
     auth0 = auth0_init(app)
 
+    from app.websocket import init_websocket
+    app = init_websocket(app)
+
     # Firebase setup
     app.register_blueprint(firebase_bp, url_prefix='/api')
 

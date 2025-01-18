@@ -1,8 +1,11 @@
 import { app, BrowserWindow, ipcMain } from "electron";
 import SessionTracker from "./tracker.js";
+import WebSocketService from './websocket';
+
 let sessionTracker = new SessionTracker();
 
 let mainWindow;
+let wsService;
 let intervalId = null;
 
 app.whenReady().then(() => {
@@ -17,6 +20,8 @@ app.whenReady().then(() => {
 
   mainWindow.loadFile("index.html");
 });
+
+wsService = new WebSocketService();
 
 // Listen for "start-session" from renderer process
 ipcMain.on("start-session", () => {
@@ -40,6 +45,10 @@ ipcMain.on("end-session", () => {
 ipcMain.on("clear-session", () => {
   sessionTracker.clearData();
   console.log("Data cleared!");
+});
+
+ipcMain.on("checkpoint-update", (event, checkpoint) => {
+  wsService.updateCheckpoint(checkpoint);
 });
 
 app.on("window-all-closed", () => {
