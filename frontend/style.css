@@ -1,0 +1,48 @@
+body {
+    font-family: "Inter", serif;
+    padding: 3%;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.bar-chart {
+    width: 100%;
+    max-width: 50%;
+    margin-bottom: 3%;
+}
+
+.box-container {
+    display: flex;
+    gap: 1%;
+    margin-bottom: 3%;
+}
+
+.box {
+    width: 200px;
+    height: 100px;
+    box-shadow: 0px 0px 10px 5px rgb(240, 240, 240);
+    border-radius: 10px;
+    padding: 1%;
+}
+
+.leaderboard-container {
+    width: 50%;
+}
+
+.person {
+    width: 100%;
+    margin-bottom: 1%;
+    padding: 1%;
+    border-radius: 5px;
+    box-shadow: 0px 0px 10px 5px rgb(240, 240, 240);
+}
+
