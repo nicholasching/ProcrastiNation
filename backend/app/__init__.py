@@ -6,14 +6,11 @@ from authlib.integrations.flask_client import OAuth
 # Load environment variables from .env
 load_dotenv()
 
-# Initialize OAuth
-oauth = OAuth()
-
-def create_app():
-    app = Flask(__name__)
+def auth0_init():
+    # Initialize OAuth
+    oauth = OAuth()
 
     # Load configuration settings
-    app.config["SECRET_KEY"] = os.getenv("APP_SECRET_KEY")
     app.config["AUTH0_CLIENT_ID"] = os.getenv("AUTH0_CLIENT_ID")
     app.config["AUTH0_CLIENT_SECRET"] = os.getenv("AUTH0_CLIENT_SECRET")
     app.config["AUTH0_DOMAIN"] = os.getenv("AUTH0_DOMAIN")
@@ -29,6 +26,21 @@ def create_app():
         client_kwargs={"scope": "openid profile email"},
         server_metadata_url=f'https://{os.getenv("AUTH0_DOMAIN")}/.well-known/openid-configuration'
     )
+
+    return auth0
+
+def create_app():
+    app = Flask(__name__)
+    app.config["SECRET_KEY"] = os.getenv("APP_SECRET_KEY")
+
+    auth0 = auth0_init()
+
+    # Firebase setup
+    cred = credentials.Certificate(os.getenv("FIREBASE_CREDENTIALS_PATH"))  # Path to Firebase Admin SDK JSON file
+    firebase_admin.initialize_app(cred)
+
+    # Initialize Firestore DB
+    db = firestore.client()
 
     # Register Blueprints
     from app.auth_routes import auth_bp
