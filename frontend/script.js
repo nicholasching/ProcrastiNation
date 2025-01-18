@@ -1,5 +1,10 @@
 const { ipcRenderer } = require("electron");
 
+document.getElementById("nicksButton").addEventListener("click", () => {
+  console.log("Nick button clicked!");
+  ipcRenderer.send("nick-button");
+});
+
 document.getElementById("start-session").addEventListener("click", () => {
   console.log("Start Session button clicked!");
   ipcRenderer.send("start-session"); // Sends the "start-session" event to the main process.

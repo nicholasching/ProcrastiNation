@@ -1,4 +1,5 @@
 import { app, BrowserWindow, ipcMain } from "electron";
+import { playAudioFile } from 'audic';
 import SessionTracker from "./tracker.js";
 let sessionTracker = new SessionTracker();
 
@@ -40,6 +41,11 @@ ipcMain.on("end-session", () => {
 ipcMain.on("clear-session", () => {
   sessionTracker.clearData();
   console.log("Data cleared!");
+});
+
+ipcMain.on("nick-button", async () => {
+  await playAudioFile('audio/test.mp3');
+  console.log("Run")
 });
 
 app.on("window-all-closed", () => {
