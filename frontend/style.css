@@ -301,7 +301,7 @@ h2 {
 .options-container {
     display: flex;
     flex-direction: column;
-    width: 30%;
+    width: 40%;
     padding: 3%;
     text-align: center;
     box-shadow: var(--box-shadow-standard);
@@ -312,7 +312,7 @@ h2 {
 
 .create-text {
     color: var(--color-primary);
-    margin-bottom: 20%;
+    margin-bottom: 10%;
     transition: 0.3s;
     &:hover {
         scale: 1.1;
