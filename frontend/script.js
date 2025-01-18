@@ -1,21 +1,48 @@
-const { ipcRenderer } = require("electron");
+function sendRequest(endpoint, data) {
+  return fetch(`http://localhost:5000/redis/${endpoint}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  }).then((res) => {
+    if (res.ok) {
+      console.log(`${endpoint.replace("_", " ")} successfully!`);
+    } else {
+      console.error(`Failed to ${endpoint.replace("_", " ")}!`);
+    }
+  });
+}
 
-document.getElementById("nicksButton").addEventListener("click", () => {
-  console.log("Nick button clicked!");
-  ipcRenderer.send("nick-button");
-});
+function startSession(sessionId) {
+  return sendRequest("start_session", { session_id: sessionId });
+}
 
-document.getElementById("start-session").addEventListener("click", () => {
-  console.log("Start Session button clicked!");
-  ipcRenderer.send("start-session"); // Sends the "start-session" event to the main process.
-});
+function joinSession(userId, sessionId) {
+  return sendRequest("join_session", {
+    user_id: userId,
+    session_id: sessionId,
+  });
+}
 
-document.getElementById("end-session").addEventListener("click", () => {
-    console.log("End Session button clicked!");
-    ipcRenderer.send("end-session"); // Sends the "end-session" event to the main process.
-});
+function updateSession(userId, sessionId, checkpoint) {
+  return sendRequest("update_session", {
+    user_id: userId,
+    session_id: sessionId,
+    checkpoint: checkpoint,
+  });
+}
 
-document.getElementById("clear-session").addEventListener("click", () => {
-    console.log("Clear Data button clicked!");
-    ipcRenderer.send("clear-session"); // Sends the "clear-data" event to the main process.
-});
+function logoutSession(userId, sessionId) {
+  return sendRequest("logout_user", { user_id: userId, session_id: sessionId });
+}
+
+function endSession(sessionId) {
+  return sendRequest("end_session", { session_id: sessionId });
+}
+
+function getActiveSessions() {
+  return fetch("http://localhost:5000/redis/get_active_sessions").then((res) =>
+    res.json()
+  );
+}
