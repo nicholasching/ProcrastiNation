@@ -25,19 +25,22 @@ class Ai:
                                  f"Furthermore, you can play an audio track on the user's computer to further pursuade them, your options are will be contained in the following list, where the first item in each sublist will be the ID to be returned and the second item is the sound that will be played:"
                                  f"{self.profiles[profile]}")],
             config=types.GenerateContentConfig(
-            response_mime_type="application/json",
-            response_schema={
-                "required": [
-                    "text",
-                    "audioID",
-                ],
-                "properties": {
-                    "text": {"type": "STRING"},
-                    "audioID": {"type": "STRING"},
+                response_mime_type="application/json",
+                response_schema={
+                    "required": [
+                        "text",
+                        "audioID",
+                    ],
+                    "properties": {
+                        "text": {"type": "STRING"},
+                        "audioID": {"type": "STRING"},
+                    },
+                    "type": "OBJECT",
                 },
-                "type": "OBJECT",
-            },
-        ),)
+                system_instruction="Respond creatively, humourously, and concisely. You may convert minutes to hours and minutes if an hour is exceeded.",
+                temperature=1.5,
+            ),
+        )
         # Time worked today
         else:
             response = self.model.models.generate_content(model='gemini-2.0-flash-exp', contents=[
@@ -57,5 +60,8 @@ class Ai:
                     },
                     "type": "OBJECT",
                 },
-            ))
+                system_instruction="Respond creatively, humourously, and concisely. You may convert minutes to hours and minutes if an hour is exceeded.",
+                temperature=1.5,
+                ),
+            )
         return response.text
