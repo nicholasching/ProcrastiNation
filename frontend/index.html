@@ -18,63 +18,114 @@
 </head>
 <body>
 
-
-
-    <h1>DASHBOARD</h1>
+    <!-- <h1 class="main-title">DASHBOARD</h1> -->
     <div class="dashboard-container">
-        <canvas id="myChart" class="bar-chart"></canvas>
-        <div class="box-container">
-            <div class="box">
-                <h2>30% Whatever</h2>
-            </div>
-            <div class="box">
-                <h2>30% Whatever</h2>
-            </div>
-            <div class="box">
-                <h2>30% Whatever</h2>
+        <div class="left-container">
+            <div class="app-stats-container tile">
+                <h2 class="app-stats-title">Your Most Used Apps Today</h2>
+                <div class="app"><i class="fa-solid fa-bookmark"></i> Discord</div>
+                <div class="app"><i class="fa-solid fa-bookmark"></i> Instagram</div>
+                <div class="app"><i class="fa-solid fa-bookmark"></i> Google Docs</div>
+                <div class="app"><i class="fa-solid fa-bookmark"></i> Google Slides</div>
             </div>
         </div>
-        <div class="leaderboard-container">
-            <h2>Most Productive Friends Today</h2>
-            <div class="person"><i class="fa-solid fa-user"></i> John</div>
-            <div class="person"><i class="fa-solid fa-user"></i> Bob</div>
-            <div class="person"><i class="fa-solid fa-user"></i> Dan</div>
-            <div class="person"><i class="fa-solid fa-user"></i> Sam</div>
+        <div class="right-container">
+            <div class="graph-container">
+                <canvas id="myChart" class="bar-graph tile"></canvas>
+                <div class="legend tile">
+                    <div class="legend-person" id="person1"><div class="legend-person-color" style="background-color: red;"></div><p>Bob</p></div>
+                    <div class="legend-person" id="person2"><div class="legend-person-color" style="background-color: blue;"></div><p>Sam</p></div>
+                    <div class="legend-person" id="person3"><div class="legend-person-color" style="background-color: orange;"></div><p>Dan</p></div>
+                </div>
+            </div>
+
+            <div class="box-container">
+                <div class="box tile">
+                    <h2>Bob has a highscore on time spent unproductive!</h2>
+                </div>
+                <div class="box tile">
+                    <h2>200h of Discord total</h2>
+                </div>
+            </div>
+            <div class="leaderboard-container tile">
+                <h2 class="leaderboard-title">Most Productive Friends Today</h2>
+                <div class="leaderboard-person"><i class="fa-solid fa-user"></i> John</div>
+                <div class="leaderboard-person"><i class="fa-solid fa-user"></i> Bob</div>
+                <div class="leaderboard-person"><i class="fa-solid fa-user"></i> Dan</div>
+            </div>
         </div>
     </div>
 
 
     <script>
-        const xValues = [100,200,300,400,500,600,700,800,900,1000];
 
-        new Chart("myChart", {
-        type: "line",
-        data: {
-            labels: xValues,
-            datasets: [{
-            data: [860,1140,1060,1060,1070,1110,1330,2210,7830,2478],
-            borderColor: "black",
-            fill: false,
-            pointRadius: 0,
-            tension: 0.5
-            },{
-            data: [1600,1700,1700,1900,2000,2700,4000,5000,6000,7000],
-            borderColor: "black",
-            fill: false,
-            pointRadius: 0,
-            tension: 0.5
-            },{
-            data: [300,700,2000,5000,6000,4000,2000,1000,200,100],
-            borderColor: "black",
-            fill: false,
-            pointRadius: 0,
-            tension: 0.5
-            }]
+const person1 = document.getElementById("person1");
+const person2 = document.getElementById("person2");
+const person3 = document.getElementById("person3");
+
+const xValues = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
+
+const myChart = new Chart("myChart", {
+  type: "line",
+  data: {
+    labels: xValues,
+    datasets: [
+      {
+        data: [860, 1140, 1060, 1060, 1070, 1110, 1330, 2210, 7830, 2478],
+        borderColor: "red",
+        borderWidth: 2, // Default width
+        fill: false,
+        pointRadius: 0,
+        tension: 0.5,
+      },
+      {
+        data: [1600, 1700, 1700, 1900, 2000, 2700, 4000, 5000, 6000, 7000],
+        borderColor: "blue",
+        borderWidth: 2, // Default width
+        fill: false,
+        pointRadius: 0,
+        tension: 0.5,
+      },
+      {
+        data: [300, 700, 2000, 5000, 6000, 4000, 2000, 1000, 200, 100],
+        borderColor: "orange",
+        borderWidth: 2, // Default width
+        fill: false,
+        pointRadius: 0,
+        tension: 0.5,
+      },
+    ],
+  },
+    options: {
+        legend: {
+            display: false, // This disables the legend
         },
-        options: {
-            legend: {display: false}
-        }
-        });
+    },
+});
+
+// Function to change line thickness
+function highlightLine(index) {
+  myChart.data.datasets.forEach((dataset, i) => {
+    dataset.borderWidth = i === index ? 10 : 2; // Bolder line for the hovered element
+  });
+  myChart.update();
+}
+
+// Add event listeners for hover
+person1.addEventListener("mouseenter", () => highlightLine(0));
+person2.addEventListener("mouseenter", () => highlightLine(1));
+person3.addEventListener("mouseenter", () => highlightLine(2));
+
+// Reset line thickness on mouse leave
+[person1, person2, person3].forEach((person) => {
+  person.addEventListener("mouseleave", () => {
+    myChart.data.datasets.forEach((dataset) => {
+      dataset.borderWidth = 2; // Reset to default thickness
+    });
+    myChart.update();
+  });
+});
+
     </script>
     
 </body>
