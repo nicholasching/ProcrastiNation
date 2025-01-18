@@ -22,18 +22,14 @@
 </head>
 <body>
 
-  <div class="server-container server-not-visible" id="serverContainer">
-    <div class="options-container">
-      <h2 class="create-text" id="createText">Create Server</h2>
-      <h2 class="join-text">Join Server</h2>
-      <input type="text" class="join-input">
+  <div class="session-container session-not-visible tile" id="sessionContainer">
+    <div class="options-container tile">
+      <h2 class="create-text" id="createText">Create Session</h2>
+      <h2 class="join-text">Join Session</h2>
+      <input type="text" class="join-input tile" placeholder="Code Here" style="color: white;">
     </div>
-    <div class="server-list-container">
-      <div class="server">Dylan's Server / 189283923</div>
-      <div class="server">Dylan's Server / 189283923</div>
-      <div class="server">Dylan's Server / 189283923</div>
-      <div class="server">Dylan's Server / 189283923</div>
-      <div class="server">Dylan's Server / 189283923</div>
+    <div class="session-list-container tile">
+      <div class="session"></div>
     </div>
   </div>
 
@@ -69,6 +65,14 @@
               <div class="app"><p><i class="fa-solid fa-bookmark color"></i> Google Docs</p></div>
               <div class="app"><p><i class="fa-solid fa-bookmark color"></i> Google Slides</p></div>
           </div>
+          <div class="app-stats-container tile">
+            <p>Dashboard</p>
+            <h2 class="app-stats-title">Your Most Used Apps Today</h2>
+            <div class="app"><p><i class="fa-solid fa-bookmark color"></i> Discord</p></div>
+            <div class="app"><p><i class="fa-solid fa-bookmark color"></i> Instagram</p></div>
+            <div class="app"><p><i class="fa-solid fa-bookmark color"></i> Google Docs</p></div>
+            <div class="app"><p><i class="fa-solid fa-bookmark color"></i> Google Slides</p></div>
+        </div>
       </div>
         <div class="right-container">
             <div class="graph-container">
@@ -161,11 +165,12 @@
     });
 
     const profileButton = document.getElementById("profileButton");
-    const serverContainer = document.getElementById("serverContainer");
+    const sessionContainer = document.getElementById("sessionContainer");
 
     profileButton.addEventListener("click", () => {
-      serverContainer.classList.toggle("server-visible");
-      serverContainer.classList.toggle("server-not-visible");
+      sessionContainer.style.display = "flex";
+      sessionContainer.classList.toggle("session-visible");
+      sessionContainer.classList.toggle("session-not-visible");
     });
 
     const person1 = document.getElementById("person1");

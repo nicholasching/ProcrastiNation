@@ -41,33 +41,43 @@ function createBooWindow() {
   })
 }
 
-function createNotifWindow(){
+function createNotifWindow() {
   const primaryDisplay = screen.getPrimaryDisplay();
   const { width, height } = primaryDisplay.workAreaSize;
   notifWindow = new BrowserWindow({
-    width: width/4,
-    height: height/1.5,
+    width: width / 4,
+    height: height / 1.75,
     frame: false,
     alwaysOnTop: true,
     skipTaskbar: true,
-    transparent: true,
     hasShadow: false,
+    resizable: false,
     show: false,
     webPreferences: {
-        nodeIntegration: true,
-        contextIsolation: false,
+      nodeIntegration: true,
+      contextIsolation: false,
     },
   });
+
+  notifWindow.setIgnoreMouseEvents(false);
   notifWindow.loadFile("notif.html");
 
-  notifWindow.once('ready-to-show', () => {
-      notifWindow.show();
+  notifWindow.once("ready-to-show", () => {
+    notifWindow.show();
   });
 
-  notifWindow.on('closed', () => {
-      notifWindow = null; // Clear reference to boo window when it's closed
-  })
+  notifWindow.on("closed", () => {
+    notifWindow = null; // Clear reference to notifWindow when closed
+  });
 }
+
+// Listen for the close button click from notif.html
+ipcMain.on("close-notif-window", () => {
+  if (notifWindow) {
+    notifWindow.close();
+    notifWindow = null;
+  }
+});
 
 function checkMinimize() {
   if (mainWindow && mainWindow.isMinimized()) {
