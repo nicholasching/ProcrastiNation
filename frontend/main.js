@@ -70,11 +70,11 @@ async function createNotifWindow() {
   await notifWindow.loadFile("notif.html");
 
   // Wait for AI data to be fetched
-  const data = await getAIRoast(store.get("user_id"), "chi", "instagram");
+  // const data = await getAIRoast(store.get("user_id"), "chi", "instagram");
 
   // Show the notification window after it's ready
   notifWindow.once("ready-to-show", () => {
-    notifWindow.webContents.send("notification-data", data);
+    notifWindow.webContents.send("notification-data", "apple");
     notifWindow.show();
   });
 
@@ -110,20 +110,6 @@ function checkMinimize() {
       createNotifWindow();
     }
   } else {
-    if (booTimeout) clearTimeout(booTimeout);
-  }
-
-  if (mainWindow?.isMinimized()) {
-    if (!minimizedTime) {
-      minimizedTime = Date.now();
-    }
-    // Check if minimized for 3 seconds, if so make the boo window and notification window
-    if (Date.now() - minimizedTime >= 3000 && !booWindow) {
-      createBooWindow();
-      createNotifWindow();
-    }
-  } else {
-    minimizedTime = null;
     if (booTimeout) clearTimeout(booTimeout);
   }
 }
