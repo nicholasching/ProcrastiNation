@@ -19,7 +19,10 @@
       rel="stylesheet"
     />
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
 
     <link
       rel="stylesheet"
@@ -28,29 +31,41 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 
-    <script type="module" src="./script.js" defer></script>
-    <script type="module" src="./tracker.js" defer></script>
-
-</head>
-<body>
-
-  <div class="session-container session-not-visible tile" id="sessionContainer">
-    <div class="options-container tile">
-      <h2 class="create-text" id="createText">Create Session</h2>
-      <h2 class="join-text">Join Session</h2>
-      <input type="text" class="join-input tile" placeholder="Code Here" style="color: white;">
-      <h2 class="leave-text" id="leaveText"><i class="fa-solid fa-right-to-bracket fa-rotate-180"></i> Leave Session</h2>
+    <script type="module" src="./script.js"></script>
+    <script type="module" src="./tracker.js"></script>
+  </head>
+  <body>
+    <div
+      class="session-container session-not-visible tile"
+      id="sessionContainer"
+    >
+      <div class="options-container tile">
+        <h2 class="create-text" id="createText">Create Session</h2>
+        <h2 class="join-text" id="joinText">Join Session</h2>
+        <input
+          type="text"
+          class="join-input tile"
+          placeholder="Code Here"
+          style="color: white"
+          id="input"
+        />
+        <h2 class="leave-text" id="leaveText">
+          <i class="fa-solid fa-right-to-bracket fa-rotate-180"></i> Leave
+          Session
+        </h2>
+      </div>
+      <div class="session-list-container tile">
+        <div class="session"></div>
+        <h2 class="end-text"><i class="fa-solid fa-xmark"></i> End Session</h2>
+      </div>
     </div>
-    <div class="session-list-container tile">
-      <div class="session"></div>
-      <h2 class="end-text"><i class="fa-solid fa-xmark"></i> End Session</h2>
-    </div>
-  </div>
 
     <div class="main-container" id="mainContainer">
       <div class="header-container">
         <div>
-          <h1 class="main-title"><span style="font-weight: bold;">Procrasti</span>Nation</h1>
+          <h1 class="main-title">
+            <span style="font-weight: bold">Procrasti</span>Nation
+          </h1>
         </div>
         <div class="username-setting-container">
           <div
@@ -81,16 +96,24 @@
             <p class="black">Useage</p>
             <h2 class="app-stats-title">Your Most Used Apps Today</h2>
             <div class="app">
-              <p class="black"><i class="fa-solid fa-bookmark color"></i> Discord</p>
+              <p class="black">
+                <i class="fa-solid fa-bookmark color"></i> Discord
+              </p>
             </div>
             <div class="app">
-              <p class="black"><i class="fa-solid fa-bookmark color"></i> Instagram</p>
+              <p class="black">
+                <i class="fa-solid fa-bookmark color"></i> Instagram
+              </p>
             </div>
             <div class="app">
-              <p class="black"><i class="fa-solid fa-bookmark color"></i> Google Docs</p>
+              <p class="black">
+                <i class="fa-solid fa-bookmark color"></i> Google Docs
+              </p>
             </div>
             <div class="app">
-              <p class="black"><i class="fa-solid fa-bookmark color"></i> Google Slides</p>
+              <p class="black">
+                <i class="fa-solid fa-bookmark color"></i> Google Slides
+              </p>
             </div>
           </div>
           <div class="progress-container tile" id="progressContainer1">
@@ -99,25 +122,43 @@
               <h2 class="progress-percent">0%</h2>
             </div>
             <div class="progress-text">
-              <p style="margin-bottom: 10px;">Progress Tracker</p>
-              <h2>You are almost at your goal of <span style="color: var(--color-primary);">8 hours</span> of productivity!</h2>
-              <h2 id="arrow1" class="arrow"><i class="fa-solid fa-arrow-right"></i></h2>
+              <p>Progress Tracker</p>
+              <h2>
+                You are almost at your goal of
+                <span style="color: var(--color-primary)">8 hours</span> of
+                productivity!
+              </h2>
+              <h2 id="arrow1" class="arrow">
+                <i class="fa-solid fa-arrow-right"></i>
+              </h2>
             </div>
           </div>
-          <div class="progress-container-2 tile not-visible" id="progressContainer2">
-            <p style="position: absolute; top: 30px; left: 30px;">Pomodoro Timer</p>
+          <div
+            class="progress-container-2 tile not-visible"
+            id="progressContainer2"
+          >
             <div class="progress-circle-2">
-              <div class="progress-mask-2" id="progressMask2"></div>
+              <div class="progress-mask-2"></div>
               <div class="progress-percent-2">25:00</div>
             </div>
             <div class="timer-controls">
-              <input type="number" id="timerMinutes" class="timer-input" value="25" min="1" max="60">minutes
+              <input
+                type="number"
+                id="timerMinutes"
+                class="timer-input"
+                value="25"
+                min="1"
+                max="60"
+              />
+              minutes
               <button id="startButton" class="timer-button">Start</button>
               <button id="resetButton" class="timer-button">Reset</button>
             </div>
-            <h2 id="arrow2" class="arrow"><i class="fa-solid fa-arrow-right"></i></h2>
+            <h2 id="arrow2" class="arrow">
+              <i class="fa-solid fa-arrow-right"></i>
+            </h2>
           </div>
-      </div>
+        </div>
         <div class="right-container">
           <div class="graph-container">
             <canvas id="myChart" class="bar-graph tile"></canvas>
@@ -180,6 +221,15 @@
     <button id="clear-session">Clean Session</button> -->
     </div>
 
+    <script type="module">
+      import {
+        startSession,
+        fetchActiveSessions,
+        joinSession,
+        logoutSession,
+      } from "./script.js";
+    </script>
+
     <script>
       const settingsButton = document.getElementById("settingsButton");
       const settingsMenu = document.getElementById("settingsMenu");
@@ -190,12 +240,11 @@
         settingsMenu.classList.toggle("not-visible");
       });
 
-    const lightMode = document.getElementById("lightMode");
-    const tile = document.querySelectorAll(".tile");
-    const paragraph = document.querySelectorAll("p");
-    const lightModeIcon = document.getElementById("lightModeIcon")
-    const progressMask = document.getElementById("progressMask");
-    const progressMask2 = document.getElementById("progressMask2");
+      const lightMode = document.getElementById("lightMode");
+      const tile = document.querySelectorAll(".tile");
+      const paragraph = document.querySelectorAll("p");
+      const lightModeIcon = document.getElementById("lightModeIcon");
+      const progressMask = document.getElementById("progressMask");
 
       lightMode.addEventListener("click", () => {
         document.body.classList.toggle("light-mode");
@@ -204,13 +253,12 @@
           tile.classList.toggle("light-mode-tile");
         });
 
-      paragraph.forEach(p => {
-        p.classList.toggle("light-mode-text");
+        paragraph.forEach((p) => {
+          p.classList.toggle("light-mode-text");
+        });
+        lightModeIcon.classList.toggle("light-mode-text");
+        progressMask.classList.toggle("light-mode");
       });
-      lightModeIcon.classList.toggle("light-mode-text");
-      progressMask.classList.toggle("light-mode")
-      progressMask2.classList.toggle("light-mode")
-    });
 
       const theme1 = document.getElementById("theme1");
       const theme2 = document.getElementById("theme2");
@@ -218,20 +266,38 @@
       const theme4 = document.getElementById("theme4");
 
       theme1.addEventListener("click", () => {
-        document.documentElement.style.setProperty("--color-primary","#df5e0e");
-        document.documentElement.style.setProperty("--color-secondary","rgba(255, 104, 0, 0.25)");
+        document.documentElement.style.setProperty(
+          "--color-primary",
+          "#df5e0e"
+        );
+        document.documentElement.style.setProperty(
+          "--color-secondary",
+          "rgba(255, 104, 0, 0.25)"
+        );
       });
       theme2.addEventListener("click", () => {
-        document.documentElement.style.setProperty("--color-primary", "rgba(89, 190, 243, 1)");
-        document.documentElement.style.setProperty("--color-secondary", "rgba(89, 135, 243, 0.22)");
+        document.documentElement.style.setProperty(
+          "--color-primary",
+          "rgba(89, 190, 243, 1)"
+        );
+        document.documentElement.style.setProperty(
+          "--color-secondary",
+          "rgba(89, 135, 243, 0.22)"
+        );
       });
       theme3.addEventListener("click", () => {
         document.documentElement.style.setProperty("--color-primary", "green");
-        document.documentElement.style.setProperty("--color-secondary", "rgba(40, 255, 0, 0.12)");
+        document.documentElement.style.setProperty(
+          "--color-secondary",
+          "rgba(40, 255, 0, 0.12)"
+        );
       });
       theme4.addEventListener("click", () => {
         document.documentElement.style.setProperty("--color-primary", "red");
-        document.documentElement.style.setProperty("--color-secondary", "rgba(255, 0, 0, 0.17)");
+        document.documentElement.style.setProperty(
+          "--color-secondary",
+          "rgba(255, 0, 0, 0.17)"
+        );
       });
 
       const themeButtons = document.querySelectorAll(
@@ -257,7 +323,7 @@
 
       function displayChart() {
         const rootStyles = getComputedStyle(document.documentElement);
-        const primaryColor = rootStyles.getPropertyValue('--color-primary').trim();
+        const primaryColor = rootStyles.getPropertyValue("--color-primary");
 
         const xValues = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
 
@@ -269,7 +335,9 @@
             labels: xValues,
             datasets: [
               {
-                data: [860, 1140, 1060, 1060, 1070, 1110, 1330, 2210, 7830, 2478],
+                data: [
+                  860, 1140, 1060, 1060, 1070, 1110, 1330, 2210, 7830, 2478,
+                ],
                 borderColor: primaryColor,
                 borderWidth: 2,
                 fill: false,
@@ -278,7 +346,9 @@
                 tension: 0.2,
               },
               {
-                data: [1600, 1700, 1700, 1900, 2000, 2700, 4000, 5000, 6000, 7000],
+                data: [
+                  1600, 1700, 1700, 1900, 2000, 2700, 4000, 5000, 6000, 7000,
+                ],
                 borderColor: "grey",
                 borderWidth: 2,
                 fill: false,
@@ -326,153 +396,108 @@
         });
       }
 
-    displayChart();
+      displayChart();
 
-    function updateProgress(percentage) {
-      const rootStyles = getComputedStyle(document.documentElement);
-      const primaryColor = rootStyles.getPropertyValue('--color-primary').trim();
+      function updateProgress(percentage) {
+        const rootStyles = getComputedStyle(document.documentElement);
+        const primaryColor = rootStyles
+          .getPropertyValue("--color-primary")
+          .trim();
 
-      const progressCircle = document.querySelector('.progress-circle');
-      const progressPercent = document.querySelector('.progress-percent');
+        const progressCircle = document.querySelector(".progress-circle");
+        const progressPercent = document.querySelector(".progress-percent");
 
-      progressCircle.style.background = `conic-gradient(${primaryColor} ${percentage}%, #ccc ${percentage}%)`;
-      progressPercent.textContent = `${percentage}%`;
-    }
+        progressCircle.style.background = `conic-gradient(${primaryColor} ${percentage}%, #ccc ${percentage}%)`;
+        progressPercent.textContent = `${percentage}%`;
+      }
 
-    // Observe changes to the CSS variables
-    const observer = new MutationObserver(() => {
-      const percentage = parseInt(document.querySelector('.progress-percent').textContent, 10);
-      updateProgress(percentage); // Reapply the gradient when the color changes
-    });
+      // Observe changes to the CSS variables
+      const observer = new MutationObserver(() => {
+        const percentage = parseInt(
+          document.querySelector(".progress-percent").textContent,
+          10
+        );
+        updateProgress(percentage); // Reapply the gradient when the color changes
+      });
 
-    // Observe changes on the root element (where --color-primary is defined)
-    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['style'] });
+      // Observe changes on the root element (where --color-primary is defined)
+      observer.observe(document.documentElement, {
+        attributes: true,
+        attributeFilter: ["style"],
+      });
 
-    // Example usage
-    updateProgress(74);
+      // Example usage
+      updateProgress(74);
 
-    const arrow1 = document.getElementById("arrow1");
-    const arrow2 = document.getElementById("arrow2");
+      const arrow1 = document.getElementById("arrow1");
+      const arrow2 = document.getElementById("arrow2");
 
-    arrow1.addEventListener("click", () => {
-      progressContainer1.classList.toggle("not-visible");
-      progressContainer2.classList.toggle("not-visible");
-      progressContainer1.classList.toggle("visible");
-      progressContainer2.classList.toggle("visible");
-    })
+      arrow1.addEventListener("click", () => {
+        progressContainer1.classList.toggle("not-visible");
+        progressContainer2.classList.toggle("not-visible");
+        progressContainer1.classList.toggle("visible");
+        progressContainer2.classList.toggle("visible");
+      });
 
-    arrow2.addEventListener("click", () => {
-      progressContainer2.classList.toggle("not-visible");
-      progressContainer1.classList.toggle("not-visible");
-      progressContainer2.classList.toggle("visible");
-      progressContainer1.classList.toggle("visible");
-    })
+      arrow2.addEventListener("click", () => {
+        progressContainer2.classList.toggle("not-visible");
+        progressContainer1.classList.toggle("not-visible");
+        progressContainer2.classList.toggle("visible");
+        progressContainer1.classList.toggle("visible");
+      });
 
-    const progressCircle = document.querySelector('.progress-circle-2'); // Updated to match the correct class
-    const progressPercent = document.querySelector('.progress-percent-2'); // Updated to match the correct class
-    const timerMinutesInput = document.getElementById('timerMinutes');
-    const startButton = document.getElementById('startButton');
-    const resetButton = document.getElementById('resetButton');
+      const progressCircle = document.querySelector(".progress-circle-2"); // Updated to match the correct class
+      const progressPercent = document.querySelector(".progress-percent-2"); // Updated to match the correct class
+      const timerMinutesInput = document.getElementById("timerMinutes");
+      const startButton = document.getElementById("startButton");
+      const resetButton = document.getElementById("resetButton");
 
-    let timerDuration = 25 * 60; // Default 25 minutes
-    let remainingTime = timerDuration;
-    let timerInterval;
+      let timerDuration = 25 * 60; // Default 25 minutes
+      let remainingTime = timerDuration;
+      let timerInterval;
 
-    function updateProgressCircle(remainingTime, timerDuration) {
-      const percentage = ((timerDuration - remainingTime) / timerDuration) * 100;
-      const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--color-primary').trim();
-      progressCircle.style.background = `conic-gradient(${primaryColor} ${percentage}%, #ccc ${percentage}%)`;
+      function updateProgressCircle(remainingTime, timerDuration) {
+        const percentage =
+          ((timerDuration - remainingTime) / timerDuration) * 100;
+        const primaryColor = getComputedStyle(document.documentElement)
+          .getPropertyValue("--color-primary")
+          .trim();
+        progressCircle.style.background = `conic-gradient(${primaryColor} ${percentage}%, #ccc ${percentage}%)`;
 
-      const minutes = Math.floor(remainingTime / 60);
-      const seconds = remainingTime % 60;
-      progressPercent.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
-    }
+        const minutes = Math.floor(remainingTime / 60);
+        const seconds = remainingTime % 60;
+        progressPercent.textContent = `${minutes}:${seconds
+          .toString()
+          .padStart(2, "0")}`;
+      }
 
-    function startTimer() {
-      clearInterval(timerInterval);
-      remainingTime = parseInt(timerMinutesInput.value, 10) * 60;
-      timerDuration = remainingTime;
+      function startTimer() {
+        clearInterval(timerInterval);
+        remainingTime = parseInt(timerMinutesInput.value, 10) * 60;
+        timerDuration = remainingTime;
 
-      timerInterval = setInterval(() => {
-        if (remainingTime > 0) {
-          remainingTime--;
-          updateProgressCircle(remainingTime, timerDuration);
-        } else {
-          clearInterval(timerInterval);
-          alert('Time is up!');
-        }
-      }, 1000);
-    }
+        timerInterval = setInterval(() => {
+          if (remainingTime > 0) {
+            remainingTime--;
+            updateProgressCircle(remainingTime, timerDuration);
+          } else {
+            clearInterval(timerInterval);
+            alert("Time is up!");
+          }
+        }, 1000);
+      }
 
-    function resetTimer() {
-      clearInterval(timerInterval);
-      remainingTime = timerDuration;
+      function resetTimer() {
+        clearInterval(timerInterval);
+        remainingTime = timerDuration;
+        updateProgressCircle(remainingTime, timerDuration);
+      }
+
+      startButton.addEventListener("click", startTimer);
+      resetButton.addEventListener("click", resetTimer);
+
+      // Initialize the timer display
       updateProgressCircle(remainingTime, timerDuration);
-    }
-
-    startButton.addEventListener('click', startTimer);
-    resetButton.addEventListener('click', resetTimer);
-
-    // Initialize the timer display
-    updateProgressCircle(remainingTime, timerDuration);
-
-// Reference the HTML element
-let motivationText = document.getElementById("motivationText");
-
-// Array of quotes
-const quotes = [
-  "Every great achievement begins with a single step",
-  "Success comes from consistency and dedication",
-  "Small changes lead to big transformations over time",
-  "Dreams become reality when we take action",
-  "Progress is better than perfection every time",
-  "The best way to succeed is to start now",
-  "Confidence is key to overcoming challenges",
-  "Everything seems impossible until it’s accomplished",
-  "The future is shaped by what you do today",
-  "Do what is necessary now to get where you want to go",
-  "Struggles pave the way for future success",
-  "Believe in the impossible to make it achievable",
-  "Keep moving forward and time will work for you",
-  "Success requires effort and persistence",
-  "Your mindset is what determines your success",
-  "Create your future with the choices you make today",
-  "A small step today can lead to a giant leap tomorrow",
-  "Focus on the present and everything else will fall into place",
-  "Every journey begins with the first step",
-  "Make the most of what you have and where you are",
-  "You must begin in order to achieve greatness",
-  "Success comes to those who never give up",
-  "Hard work brings immense satisfaction when it pays off",
-  "Work with passion and rest with satisfaction",
-  "Finish what you started, no matter how tired you are",
-  "Push yourself further, there’s always more to give",
-  "Daily progress leads to remarkable results",
-  "Dream big and turn those dreams into action",
-  "Focus on what you want, not on what stands in the way",
-  "Challenges bring meaning and purpose to life",
-  "Don’t wait for the perfect moment, create it",
-  "You are stronger than any challenge you face",
-  "Believe in your abilities and take action",
-  "Start now, and you will reach your goals",
-  "Your potential is unlimited if you keep moving forward",
-  "Invest in today for a better tomorrow",
-  "Learn from the past, live in the present, plan for the future",
-  "Discipline turns goals into accomplishments",
-  "The little extra effort makes all the difference",
-  "Create opportunities by taking action, not waiting",
-  "Yesterday is gone, focus on today"
-];
-
-
-
-// Generate a random index
-let x = Math.floor(Math.random() * quotes.length);
-
-// Set the quote in the HTML element
-motivationText.innerHTML = quotes[x];
-
-
     </script>
   </body>
 </html>

@@ -21,6 +21,7 @@ function startSession(sessionId) {
 }
 
 function joinSession(userId, sessionId) {
+  console.log("This join metho is invoked");
   // send a request to the backend to join the session
   return sendRequest("join_session", {
     user_id: userId,
@@ -89,7 +90,6 @@ function fetchActiveSessions() {
       data.sessions.forEach((sessionId) => {
         const sessionDiv = document.createElement("div");
         sessionDiv.textContent = `Session ID: ${sessionId}`;
-        sessionDiv.className = "session-item"; // Optional: Add a class for styling
         sessionListContainer.appendChild(sessionDiv);
       });
 
@@ -100,19 +100,27 @@ function fetchActiveSessions() {
     });
 }
 
-setInterval(fetchActiveSessions, 1000);
-
-document.getElementById("createSession").addEventListener("click", () => {
+document.getElementById("createText").addEventListener("click", () => {
   const sessionId = document.getElementById("input").value;
   if (sessionId) {
     startSession(sessionId).then(() => fetchActiveSessions());
   }
 });
 
-document.getElementById("joinSession").addEventListener("click", () => {
+document.getElementById("joinText").addEventListener("click", () => {
   const userId = store.get("user_id");
   const sessionId = document.getElementById("input").value;
   if (userId && sessionId) {
     joinSession(userId, sessionId).then(() => fetchActiveSessions());
   }
 });
+
+document.getElementById("leaveText").addEventListener("click", () => {
+  const userId = store.get("user_id");
+  const sessionId = document.getElementById("input").value;
+  if (userId && sessionId) {
+    logoutSession(userId, sessionId).then(() => fetchActiveSessions());
+  }
+});
+
+setInterval(fetchActiveSessions, 1000);
