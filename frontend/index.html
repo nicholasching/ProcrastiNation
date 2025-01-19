@@ -69,30 +69,30 @@
             <p><i class="fa-solid fa-gear"></i></p>
           </div>
           <div class="username-setting-element tile" id="profileButton">
-            <p><i class="fa-solid fa-user"></i> Username</p>
+            <p class="username-text">Dylan <i class="fa-solid fa-user"></i></p>
           </div>
         </div>
       </div>
 
       <div class="dashboard-container">
         <div class="left-container">
-          <div class="app-stats-container tile">
-            <p>Dashboard</p>
+          <div class="app-stats-container color-tile tile">
+            <p class="black">Useage</p>
             <h2 class="app-stats-title">Your Most Used Apps Today</h2>
             <div class="app">
-              <p><i class="fa-solid fa-bookmark color"></i> Discord</p>
+              <p class="black"><i class="fa-solid fa-bookmark color"></i> Discord</p>
             </div>
             <div class="app">
-              <p><i class="fa-solid fa-bookmark color"></i> Instagram</p>
+              <p class="black"><i class="fa-solid fa-bookmark color"></i> Instagram</p>
             </div>
             <div class="app">
-              <p><i class="fa-solid fa-bookmark color"></i> Google Docs</p>
+              <p class="black"><i class="fa-solid fa-bookmark color"></i> Google Docs</p>
             </div>
             <div class="app">
-              <p><i class="fa-solid fa-bookmark color"></i> Google Slides</p>
+              <p class="black"><i class="fa-solid fa-bookmark color"></i> Google Slides</p>
             </div>
           </div>
-          <div class="progress-container tile">
+          <div class="progress-container tile" id="progressContainer1">
             <div class="progress-circle">
               <div class="progress-mask" id="progressMask"></div>
               <h2 class="progress-percent">0%</h2>
@@ -100,7 +100,20 @@
             <div class="progress-text">
               <p>Progress Tracker</p>
               <h2>You are almost at your goal of <span style="color: var(--color-primary);">8 hours</span> of productivity!</h2>
+              <h2 id="arrow1" class="arrow"><i class="fa-solid fa-arrow-right"></i></h2>
             </div>
+          </div>
+          <div class="progress-container-2 tile not-visible" id="progressContainer2">
+            <div class="progress-circle-2">
+              <div class="progress-mask-2"></div>
+              <div class="progress-percent-2">25:00</div>
+            </div>
+            <div class="timer-controls">
+              <input type="number" id="timerMinutes" class="timer-input" value="25" min="1" max="60"> minutes
+              <button id="startButton" class="timer-button">Start</button>
+              <button id="resetButton" class="timer-button">Reset</button>
+            </div>
+            <h2 id="arrow2" class="arrow"><i class="fa-solid fa-arrow-right"></i></h2>
           </div>
       </div>
         <div class="right-container">
@@ -145,17 +158,17 @@
               <h2><span class="color">200h</span> of Discord total</h2>
             </div>
           </div>
-          <div class="leaderboard-container tile">
-            <p>Leaderboard</p>
+          <div class="leaderboard-container color-tile tile">
+            <p class="black">Leaderboard</p>
             <h2 class="leaderboard-title">Most Productive Friends Today</h2>
             <div class="leaderboard-person">
-              <p><i class="fa-solid fa-user color"></i> John</p>
+              <p class="black"><i class="fa-solid fa-user color"></i> John</p>
             </div>
             <div class="leaderboard-person">
-              <p><i class="fa-solid fa-user color"></i> Bob</p>
+              <p class="black"><i class="fa-solid fa-user color"></i> Bob</p>
             </div>
             <div class="leaderboard-person">
-              <p><i class="fa-solid fa-user color"></i> Dan</p>
+              <p class="black"><i class="fa-solid fa-user color"></i> Dan</p>
             </div>
           </div>
         </div>
@@ -202,19 +215,20 @@
       const theme4 = document.getElementById("theme4");
 
       theme1.addEventListener("click", () => {
-        document.documentElement.style.setProperty(
-          "--color-primary",
-          "#df5e0e"
-        );
+        document.documentElement.style.setProperty("--color-primary","#df5e0e");
+        document.documentElement.style.setProperty("--color-secondary","rgba(255, 104, 0, 0.25)");
       });
       theme2.addEventListener("click", () => {
-        document.documentElement.style.setProperty("--color-primary", "purple");
+        document.documentElement.style.setProperty("--color-primary", "rgba(89, 190, 243, 1)");
+        document.documentElement.style.setProperty("--color-secondary", "rgba(89, 135, 243, 0.22)");
       });
       theme3.addEventListener("click", () => {
         document.documentElement.style.setProperty("--color-primary", "green");
+        document.documentElement.style.setProperty("--color-secondary", "rgba(40, 255, 0, 0.12)");
       });
       theme4.addEventListener("click", () => {
         document.documentElement.style.setProperty("--color-primary", "red");
+        document.documentElement.style.setProperty("--color-secondary", "rgba(255, 0, 0, 0.17)");
       });
 
       const themeButtons = document.querySelectorAll(
@@ -238,34 +252,32 @@
       const person2 = document.getElementById("person2");
       const person3 = document.getElementById("person3");
 
-    function displayChart() {
-      const rootStyles = getComputedStyle(document.documentElement);
-      const primaryColor = rootStyles.getPropertyValue('--color-primary');
+      function displayChart() {
+        const rootStyles = getComputedStyle(document.documentElement);
+        const primaryColor = rootStyles.getPropertyValue('--color-primary').trim();
 
         const xValues = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
 
-        const myChart = new Chart("myChart", {
+        const ctx = document.getElementById("myChart").getContext("2d");
+
+        const myChart = new Chart(ctx, {
           type: "line",
           data: {
             labels: xValues,
             datasets: [
               {
-                data: [
-                  860, 1140, 1060, 1060, 1070, 1110, 1330, 2210, 7830, 2478,
-                ],
+                data: [860, 1140, 1060, 1060, 1070, 1110, 1330, 2210, 7830, 2478],
                 borderColor: primaryColor,
-                borderWidth: 1,
+                borderWidth: 2,
                 fill: false,
                 pointRadius: [0, 0, 0, 0, 0, 0, 0, 0, 0, 3],
                 pointBackgroundColor: primaryColor,
                 tension: 0.2,
               },
               {
-                data: [
-                  1600, 1700, 1700, 1900, 2000, 2700, 4000, 5000, 6000, 7000,
-                ],
+                data: [1600, 1700, 1700, 1900, 2000, 2700, 4000, 5000, 6000, 7000],
                 borderColor: "grey",
-                borderWidth: 1,
+                borderWidth: 2,
                 fill: false,
                 pointRadius: [0, 0, 0, 0, 0, 0, 0, 0, 0, 3],
                 pointBackgroundColor: "grey",
@@ -274,7 +286,7 @@
               {
                 data: [300, 700, 2000, 5000, 6000, 4000, 2000, 1000, 200, 100],
                 borderColor: "grey",
-                borderWidth: 1,
+                borderWidth: 2,
                 fill: false,
                 pointRadius: [0, 0, 0, 0, 0, 0, 0, 0, 0, 3],
                 pointBackgroundColor: "grey",
@@ -289,9 +301,10 @@
           },
         });
 
+        // Highlight a specific line on hover
         function highlightLine(index) {
           myChart.data.datasets.forEach((dataset, i) => {
-            dataset.borderWidth = i === index ? 3 : 1;
+            dataset.borderWidth = i === index ? 4 : 1;
           });
           myChart.update();
         }
@@ -334,7 +347,73 @@
 
     // Example usage
     updateProgress(74);
-    
+
+    const arrow1 = document.getElementById("arrow1");
+    const arrow2 = document.getElementById("arrow2");
+
+    arrow1.addEventListener("click", () => {
+      progressContainer1.classList.toggle("not-visible");
+      progressContainer2.classList.toggle("not-visible");
+      progressContainer1.classList.toggle("visible");
+      progressContainer2.classList.toggle("visible");
+    })
+
+    arrow2.addEventListener("click", () => {
+      progressContainer2.classList.toggle("not-visible");
+      progressContainer1.classList.toggle("not-visible");
+      progressContainer2.classList.toggle("visible");
+      progressContainer1.classList.toggle("visible");
+    })
+
+    const progressCircle = document.querySelector('.progress-circle-2'); // Updated to match the correct class
+    const progressPercent = document.querySelector('.progress-percent-2'); // Updated to match the correct class
+    const timerMinutesInput = document.getElementById('timerMinutes');
+    const startButton = document.getElementById('startButton');
+    const resetButton = document.getElementById('resetButton');
+
+    let timerDuration = 25 * 60; // Default 25 minutes
+    let remainingTime = timerDuration;
+    let timerInterval;
+
+    function updateProgressCircle(remainingTime, timerDuration) {
+      const percentage = ((timerDuration - remainingTime) / timerDuration) * 100;
+      const primaryColor = getComputedStyle(document.documentElement).getPropertyValue('--color-primary').trim();
+      progressCircle.style.background = `conic-gradient(${primaryColor} ${percentage}%, #ccc ${percentage}%)`;
+
+      const minutes = Math.floor(remainingTime / 60);
+      const seconds = remainingTime % 60;
+      progressPercent.textContent = `${minutes}:${seconds.toString().padStart(2, '0')}`;
+    }
+
+    function startTimer() {
+      clearInterval(timerInterval);
+      remainingTime = parseInt(timerMinutesInput.value, 10) * 60;
+      timerDuration = remainingTime;
+
+      timerInterval = setInterval(() => {
+        if (remainingTime > 0) {
+          remainingTime--;
+          updateProgressCircle(remainingTime, timerDuration);
+        } else {
+          clearInterval(timerInterval);
+          alert('Time is up!');
+        }
+      }, 1000);
+    }
+
+    function resetTimer() {
+      clearInterval(timerInterval);
+      remainingTime = timerDuration;
+      updateProgressCircle(remainingTime, timerDuration);
+    }
+
+    startButton.addEventListener('click', startTimer);
+    resetButton.addEventListener('click', resetTimer);
+
+    // Initialize the timer display
+    updateProgressCircle(remainingTime, timerDuration);
+
+          
 
     </script>
   </body>
