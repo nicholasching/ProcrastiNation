@@ -75,7 +75,7 @@ def join_session():
     return jsonify({'message': 'User successfully joined the session!'})
 
 @redis_routes.route('/update_session', methods=['POST'])
-def set_session():
+def update_session():
     data = request.json
     user_id = data['user_id']
     session_id = data['session_id']  # Using session_id as host_id
