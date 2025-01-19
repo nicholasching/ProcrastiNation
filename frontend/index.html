@@ -1,251 +1,326 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>UofT Hacks 12</title>
 
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inconsolata:wght@200..900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+      rel="stylesheet"
+    />
 
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
+      rel="stylesheet"
+    />
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
 
     <script src="./script.js" defer></script>
-
-</head>
-<body>
-
-  <div class="server-container server-not-visible" id="serverContainer">
-    <div class="options-container">
-      <h2 class="create-text" id="createText">Create Server</h2>
-      <h2 class="join-text">Join Server</h2>
-      <input type="text" class="join-input">
-    </div>
-    <div class="server-list-container">
-      <div class="server">Dylan's Server / 189283923</div>
-      <div class="server">Dylan's Server / 189283923</div>
-      <div class="server">Dylan's Server / 189283923</div>
-      <div class="server">Dylan's Server / 189283923</div>
-      <div class="server">Dylan's Server / 189283923</div>
-    </div>
-  </div>
-
-  <div class="main-container" id="mainContainer">
-    <div class="header-container">
-      <div>
-        <h1 class="main-title">Project</h1>
+  </head>
+  <body>
+    <div
+      class="session-container session-not-visible tile"
+      id="sessionContainer"
+    >
+      <div class="options-container tile">
+        <button class="create-session" id="createSession">
+          Create Session
+        </button>
+        <button class="join-session" id="joinSession">Join Session</button>
+        <input
+          type="text"
+          class="join-input tile"
+          id="input"
+          placeholder="Code Here"
+          style="color: white"
+        />
       </div>
-      <div class="username-setting-container">
-        <div class="username-setting-element tile settings-menu not-visible" style="display:none;" id="settingsMenu">
-          <div class="theme" id="lightMode"><i class="fa-solid fa-circle-half-stroke" id="lightModeIcon"></i></div>
-          <div class="theme-1 theme" id="theme1"></div>
-          <div class="theme-2 theme" id="theme2"></div>
-          <div class="theme-3 theme" id="theme3"></div>
-          <div class="theme-4 theme" id="theme4"></div>
-        </div>
-        <div class="username-setting-element tile" id="settingsButton">
-          <p><i class="fa-solid fa-gear"></i></p>
-        </div>
-        <div class="username-setting-element tile" id="profileButton">
-          <p><i class="fa-solid fa-user"></i> Username</p>
-        </div>
+      <div class="session-list-container tile">
+        <div class="session"></div>
       </div>
     </div>
 
-    <div class="dashboard-container">
-      <div class="left-container">
-          <div class="app-stats-container tile">
-              <p>Dashboard</p>
-              <h2 class="app-stats-title">Your Most Used Apps Today</h2>
-              <div class="app"><p><i class="fa-solid fa-bookmark color"></i> Discord</p></div>
-              <div class="app"><p><i class="fa-solid fa-bookmark color"></i> Instagram</p></div>
-              <div class="app"><p><i class="fa-solid fa-bookmark color"></i> Google Docs</p></div>
-              <div class="app"><p><i class="fa-solid fa-bookmark color"></i> Google Slides</p></div>
+    <div class="main-container" id="mainContainer">
+      <div class="header-container">
+        <div>
+          <h1 class="main-title">Project</h1>
+        </div>
+        <div class="username-setting-container">
+          <div
+            class="username-setting-element tile settings-menu not-visible"
+            style="display: none"
+            id="settingsMenu"
+          >
+            <div class="theme" id="lightMode">
+              <i class="fa-solid fa-circle-half-stroke" id="lightModeIcon"></i>
+            </div>
+            <div class="theme-1 theme" id="theme1"></div>
+            <div class="theme-2 theme" id="theme2"></div>
+            <div class="theme-3 theme" id="theme3"></div>
+            <div class="theme-4 theme" id="theme4"></div>
           </div>
-      </div>
-        <div class="right-container">
-            <div class="graph-container">
-                <canvas id="myChart" class="bar-graph tile"></canvas>
-                <div class="legend tile">
-                    <p class="legend-subtitle">Legend</p>
-                    <div class="legend-person" id="person1"><div class="legend-person-color" style="background-color: var(--color-primary);"></div><p>Bob</p></div>
-                    <div class="legend-person" id="person2"><div class="legend-person-color" style="background-color: grey;"></div><p>Sam</p></div>
-                    <div class="legend-person" id="person3"><div class="legend-person-color" style="background-color: grey;"></div><p>Dan</p></div>
-                </div>
-            </div>
-
-            <div class="box-container">
-                <div class="box tile">
-                  <p>Highlight</p>
-                  <h2><span class="color">Bob</span> has a highscore on time spent unproductive!</h2>
-                </div>
-                <div class="box tile">
-                  <p>Statistics</p>
-                  <h2><span class="color">200h</span> of Discord total</h2>
-                </div>
-            </div>
-            <div class="leaderboard-container tile">
-                <p>Leaderboard</p>
-                <h2 class="leaderboard-title">Most Productive Friends Today</h2>
-                <div class="leaderboard-person"><p><i class="fa-solid fa-user color"></i> John</p></div>
-                <div class="leaderboard-person"><p><i class="fa-solid fa-user color"></i> Bob</p></div>
-                <div class="leaderboard-person"><p><i class="fa-solid fa-user color"></i> Dan</p></div>
-            </div>
+          <div class="username-setting-element tile" id="settingsButton">
+            <p><i class="fa-solid fa-gear"></i></p>
+          </div>
+          <div class="username-setting-element tile" id="profileButton">
+            <p><i class="fa-solid fa-user"></i> Username</p>
+          </div>
         </div>
-    </div>
+      </div>
 
-    <!-- <button id="start-session">Start Session</button>
+      <div class="dashboard-container">
+        <div class="left-container">
+          <div class="app-stats-container tile">
+            <p>Dashboard</p>
+            <h2 class="app-stats-title">Your Most Used Apps Today</h2>
+            <div class="app">
+              <p><i class="fa-solid fa-bookmark color"></i> Discord</p>
+            </div>
+            <div class="app">
+              <p><i class="fa-solid fa-bookmark color"></i> Instagram</p>
+            </div>
+            <div class="app">
+              <p><i class="fa-solid fa-bookmark color"></i> Google Docs</p>
+            </div>
+            <div class="app">
+              <p><i class="fa-solid fa-bookmark color"></i> Google Slides</p>
+            </div>
+          </div>
+          <div class="app-stats-container tile">
+            <p>Dashboard</p>
+            <h2 class="app-stats-title">Your Most Used Apps Today</h2>
+            <div class="app">
+              <p><i class="fa-solid fa-bookmark color"></i> Discord</p>
+            </div>
+            <div class="app">
+              <p><i class="fa-solid fa-bookmark color"></i> Instagram</p>
+            </div>
+            <div class="app">
+              <p><i class="fa-solid fa-bookmark color"></i> Google Docs</p>
+            </div>
+            <div class="app">
+              <p><i class="fa-solid fa-bookmark color"></i> Google Slides</p>
+            </div>
+          </div>
+        </div>
+        <div class="right-container">
+          <div class="graph-container">
+            <canvas id="myChart" class="bar-graph tile"></canvas>
+            <div class="legend tile">
+              <p class="legend-subtitle">Legend</p>
+              <div class="legend-person" id="person1">
+                <div
+                  class="legend-person-color"
+                  style="background-color: var(--color-primary)"
+                ></div>
+                <p>Bob</p>
+              </div>
+              <div class="legend-person" id="person2">
+                <div
+                  class="legend-person-color"
+                  style="background-color: grey"
+                ></div>
+                <p>Sam</p>
+              </div>
+              <div class="legend-person" id="person3">
+                <div
+                  class="legend-person-color"
+                  style="background-color: grey"
+                ></div>
+                <p>Dan</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="box-container">
+            <div class="box tile">
+              <p>Highlight</p>
+              <h2>
+                <span class="color">Bob</span> has a highscore on time spent
+                unproductive!
+              </h2>
+            </div>
+            <div class="box tile">
+              <p>Statistics</p>
+              <h2><span class="color">200h</span> of Discord total</h2>
+            </div>
+          </div>
+          <div class="leaderboard-container tile">
+            <p>Leaderboard</p>
+            <h2 class="leaderboard-title">Most Productive Friends Today</h2>
+            <div class="leaderboard-person">
+              <p><i class="fa-solid fa-user color"></i> John</p>
+            </div>
+            <div class="leaderboard-person">
+              <p><i class="fa-solid fa-user color"></i> Bob</p>
+            </div>
+            <div class="leaderboard-person">
+              <p><i class="fa-solid fa-user color"></i> Dan</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- <button id="start-session">Start Session</button>
     <button id="end-session">End Session</button>
     <button id="clear-session">Clean Session</button> -->
-
-  </div>
+    </div>
 
     <script>
+      const settingsButton = document.getElementById("settingsButton");
+      const settingsMenu = document.getElementById("settingsMenu");
 
-    const settingsButton = document.getElementById("settingsButton");
-    const settingsMenu = document.getElementById("settingsMenu");
-
-    settingsButton.addEventListener("click", () => {
-      settingsMenu.style.display = "flex";
-      settingsMenu.classList.toggle("visible");
-      settingsMenu.classList.toggle("not-visible");
-    });
-
-    const lightMode = document.getElementById("lightMode");
-    const tile = document.querySelectorAll(".tile");
-    const paragraph = document.querySelectorAll("p");
-    const lightModeIcon = document.getElementById("lightModeIcon")
-
-    lightMode.addEventListener("click", () => {
-      document.body.classList.toggle("light-mode"); 
-
-      tile.forEach(tile => {
-        tile.classList.toggle("light-mode-tile");
+      settingsButton.addEventListener("click", () => {
+        settingsMenu.style.display = "flex";
+        settingsMenu.classList.toggle("visible");
+        settingsMenu.classList.toggle("not-visible");
       });
 
-      paragraph.forEach(p => {
-        p.classList.toggle("light-mode-text");
-      });
-      lightModeIcon.classList.toggle("light-mode-text");
-    });
+      const lightMode = document.getElementById("lightMode");
+      const tile = document.querySelectorAll(".tile");
+      const paragraph = document.querySelectorAll("p");
+      const lightModeIcon = document.getElementById("lightModeIcon");
 
-    const theme1 = document.getElementById("theme1");
-    const theme2 = document.getElementById("theme2");
-    const theme3 = document.getElementById("theme3");
-    const theme4 = document.getElementById("theme4");
+      lightMode.addEventListener("click", () => {
+        document.body.classList.toggle("light-mode");
 
-    theme1.addEventListener("click", () => {
-      document.documentElement.style.setProperty('--color-primary', '#df5e0e'); 
-    });
-    theme2.addEventListener("click", () => {
-      document.documentElement.style.setProperty('--color-primary', 'purple'); 
-    });
-    theme3.addEventListener("click", () => {
-      document.documentElement.style.setProperty('--color-primary', 'green'); 
-    });
-    theme4.addEventListener("click", () => {
-      document.documentElement.style.setProperty('--color-primary', 'red'); 
-    });
-
-    const themeButtons = document.querySelectorAll('#theme1, #theme2, #theme3, #theme4');
-
-    themeButtons.forEach(button => {
-      button.addEventListener('click', displayChart);
-    });
-
-    const profileButton = document.getElementById("profileButton");
-    const serverContainer = document.getElementById("serverContainer");
-
-    profileButton.addEventListener("click", () => {
-      serverContainer.classList.toggle("server-visible");
-      serverContainer.classList.toggle("server-not-visible");
-    });
-
-    const person1 = document.getElementById("person1");
-    const person2 = document.getElementById("person2");
-    const person3 = document.getElementById("person3");
-
-    function displayChart() {
-      const rootStyles = getComputedStyle(document.documentElement);
-      const primaryColor = rootStyles.getPropertyValue('--color-primary');
-      console.log(primaryColor);
-
-      const xValues = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
-
-      const myChart = new Chart("myChart", {
-        type: "line",
-        data: {
-          labels: xValues,
-          datasets: [
-            {
-              data: [860, 1140, 1060, 1060, 1070, 1110, 1330, 2210, 7830, 2478],
-              borderColor: primaryColor,
-              borderWidth: 1, 
-              fill: false,
-              pointRadius: [0, 0, 0, 0, 0, 0, 0, 0, 0, 3],
-              pointBackgroundColor: primaryColor,
-              tension: 0.2,
-            },
-            {
-              data: [1600, 1700, 1700, 1900, 2000, 2700, 4000, 5000, 6000, 7000],
-              borderColor: "grey",
-              borderWidth: 1, 
-              fill: false,
-              pointRadius: [0, 0, 0, 0, 0, 0, 0, 0, 0, 3],
-              pointBackgroundColor: "grey",
-              tension: 0.2,
-            },
-            {
-              data: [300, 700, 2000, 5000, 6000, 4000, 2000, 1000, 200, 100],
-              borderColor: "grey",
-              borderWidth: 1, 
-              fill: false,
-              pointRadius: [0, 0, 0, 0, 0, 0, 0, 0, 0, 3],
-              pointBackgroundColor: "grey",
-              tension: 0.2,
-            },
-          ],
-        },
-        options: {
-          legend: {
-            display: false,
-          },
-        },
-      });
-
-      function highlightLine(index) {
-        myChart.data.datasets.forEach((dataset, i) => {
-          dataset.borderWidth = i === index ? 3 : 1;
+        tile.forEach((tile) => {
+          tile.classList.toggle("light-mode-tile");
         });
-        myChart.update();
-      }
 
-      person1.addEventListener("mouseenter", () => highlightLine(0));
-      person2.addEventListener("mouseenter", () => highlightLine(1));
-      person3.addEventListener("mouseenter", () => highlightLine(2));
+        paragraph.forEach((p) => {
+          p.classList.toggle("light-mode-text");
+        });
+        lightModeIcon.classList.toggle("light-mode-text");
+      });
 
-      [person1, person2, person3].forEach((person) => {
-        person.addEventListener("mouseleave", () => {
-          myChart.data.datasets.forEach((dataset) => {
-            dataset.borderWidth = 1;
+      const theme1 = document.getElementById("theme1");
+      const theme2 = document.getElementById("theme2");
+      const theme3 = document.getElementById("theme3");
+      const theme4 = document.getElementById("theme4");
+
+      theme1.addEventListener("click", () => {
+        document.documentElement.style.setProperty(
+          "--color-primary",
+          "#df5e0e"
+        );
+      });
+      theme2.addEventListener("click", () => {
+        document.documentElement.style.setProperty("--color-primary", "purple");
+      });
+      theme3.addEventListener("click", () => {
+        document.documentElement.style.setProperty("--color-primary", "green");
+      });
+      theme4.addEventListener("click", () => {
+        document.documentElement.style.setProperty("--color-primary", "red");
+      });
+
+      const themeButtons = document.querySelectorAll(
+        "#theme1, #theme2, #theme3, #theme4"
+      );
+
+      themeButtons.forEach((button) => {
+        button.addEventListener("click", displayChart);
+      });
+
+      const profileButton = document.getElementById("profileButton");
+      const sessionContainer = document.getElementById("sessionContainer");
+
+      profileButton.addEventListener("click", () => {
+        sessionContainer.style.display = "flex";
+        sessionContainer.classList.toggle("session-visible");
+        sessionContainer.classList.toggle("session-not-visible");
+      });
+
+      const person1 = document.getElementById("person1");
+      const person2 = document.getElementById("person2");
+      const person3 = document.getElementById("person3");
+
+      function displayChart() {
+        const rootStyles = getComputedStyle(document.documentElement);
+        const primaryColor = rootStyles.getPropertyValue("--color-primary");
+        console.log(primaryColor);
+
+        const xValues = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
+
+        const myChart = new Chart("myChart", {
+          type: "line",
+          data: {
+            labels: xValues,
+            datasets: [
+              {
+                data: [
+                  860, 1140, 1060, 1060, 1070, 1110, 1330, 2210, 7830, 2478,
+                ],
+                borderColor: primaryColor,
+                borderWidth: 1,
+                fill: false,
+                pointRadius: [0, 0, 0, 0, 0, 0, 0, 0, 0, 3],
+                pointBackgroundColor: primaryColor,
+                tension: 0.2,
+              },
+              {
+                data: [
+                  1600, 1700, 1700, 1900, 2000, 2700, 4000, 5000, 6000, 7000,
+                ],
+                borderColor: "grey",
+                borderWidth: 1,
+                fill: false,
+                pointRadius: [0, 0, 0, 0, 0, 0, 0, 0, 0, 3],
+                pointBackgroundColor: "grey",
+                tension: 0.2,
+              },
+              {
+                data: [300, 700, 2000, 5000, 6000, 4000, 2000, 1000, 200, 100],
+                borderColor: "grey",
+                borderWidth: 1,
+                fill: false,
+                pointRadius: [0, 0, 0, 0, 0, 0, 0, 0, 0, 3],
+                pointBackgroundColor: "grey",
+                tension: 0.2,
+              },
+            ],
+          },
+          options: {
+            legend: {
+              display: false,
+            },
+          },
+        });
+
+        function highlightLine(index) {
+          myChart.data.datasets.forEach((dataset, i) => {
+            dataset.borderWidth = i === index ? 3 : 1;
           });
           myChart.update();
+        }
+
+        person1.addEventListener("mouseenter", () => highlightLine(0));
+        person2.addEventListener("mouseenter", () => highlightLine(1));
+        person3.addEventListener("mouseenter", () => highlightLine(2));
+
+        [person1, person2, person3].forEach((person) => {
+          person.addEventListener("mouseleave", () => {
+            myChart.data.datasets.forEach((dataset) => {
+              dataset.borderWidth = 1;
+            });
+            myChart.update();
+          });
         });
-      });
+      }
 
-    }
-
-    displayChart();
-    
-
+      displayChart();
     </script>
-    
-</body>
+  </body>
 </html>
