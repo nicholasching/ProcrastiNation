@@ -27,9 +27,11 @@
       <h2 class="create-text" id="createText">Create Session</h2>
       <h2 class="join-text">Join Session</h2>
       <input type="text" class="join-input tile" placeholder="Code Here" style="color: white;">
+      <h2 class="leave-text" id="leaveText"><i class="fa-solid fa-right-to-bracket fa-rotate-180"></i> Leave Session</h2>
     </div>
     <div class="session-list-container tile">
       <div class="session"></div>
+      <h2 class="end-text"><i class="fa-solid fa-xmark"></i> End Session</h2>
     </div>
   </div>
 
@@ -65,14 +67,16 @@
               <div class="app"><p><i class="fa-solid fa-bookmark color"></i> Google Docs</p></div>
               <div class="app"><p><i class="fa-solid fa-bookmark color"></i> Google Slides</p></div>
           </div>
-          <div class="app-stats-container tile">
-            <p>Dashboard</p>
-            <h2 class="app-stats-title">Your Most Used Apps Today</h2>
-            <div class="app"><p><i class="fa-solid fa-bookmark color"></i> Discord</p></div>
-            <div class="app"><p><i class="fa-solid fa-bookmark color"></i> Instagram</p></div>
-            <div class="app"><p><i class="fa-solid fa-bookmark color"></i> Google Docs</p></div>
-            <div class="app"><p><i class="fa-solid fa-bookmark color"></i> Google Slides</p></div>
-        </div>
+          <div class="progress-container tile">
+            <div class="progress-circle">
+              <div class="progress-mask" id="progressMask"></div>
+              <h2 class="progress-percent">0%</h2>
+            </div>
+            <div class="progress-text">
+              <p>Progress Tracker</p>
+              <h2>You are almost at your goal of <span style="color: var(--color-primary);">8 hours</span> of productivity!</h2>
+            </div>
+          </div>
       </div>
         <div class="right-container">
             <div class="graph-container">
@@ -126,6 +130,7 @@
     const tile = document.querySelectorAll(".tile");
     const paragraph = document.querySelectorAll("p");
     const lightModeIcon = document.getElementById("lightModeIcon")
+    const progressMask = document.getElementById("progressMask");
 
     lightMode.addEventListener("click", () => {
       document.body.classList.toggle("light-mode"); 
@@ -138,6 +143,7 @@
         p.classList.toggle("light-mode-text");
       });
       lightModeIcon.classList.toggle("light-mode-text");
+      progressMask.classList.toggle("light-mode")
     });
 
     const theme1 = document.getElementById("theme1");
@@ -180,7 +186,6 @@
     function displayChart() {
       const rootStyles = getComputedStyle(document.documentElement);
       const primaryColor = rootStyles.getPropertyValue('--color-primary');
-      console.log(primaryColor);
 
       const xValues = [100, 200, 300, 400, 500, 600, 700, 800, 900, 1000];
 
@@ -248,6 +253,29 @@
     }
 
     displayChart();
+
+    function updateProgress(percentage) {
+      const rootStyles = getComputedStyle(document.documentElement);
+      const primaryColor = rootStyles.getPropertyValue('--color-primary').trim();
+
+      const progressCircle = document.querySelector('.progress-circle');
+      const progressPercent = document.querySelector('.progress-percent');
+
+      progressCircle.style.background = `conic-gradient(${primaryColor} ${percentage}%, #ccc ${percentage}%)`;
+      progressPercent.textContent = `${percentage}%`;
+    }
+
+    // Observe changes to the CSS variables
+    const observer = new MutationObserver(() => {
+      const percentage = parseInt(document.querySelector('.progress-percent').textContent, 10);
+      updateProgress(percentage); // Reapply the gradient when the color changes
+    });
+
+    // Observe changes on the root element (where --color-primary is defined)
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ['style'] });
+
+    // Example usage
+    updateProgress(70);
     
 
     </script>

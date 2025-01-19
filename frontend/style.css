@@ -130,6 +130,11 @@ h2 {
 
 .username-setting-element {
     padding: 1%;
+    transition: 0.2s;
+    &:hover {
+        scale: 1.05;
+        cursor: grab;
+    }
 }
 
 .settings-menu {
@@ -147,6 +152,7 @@ h2 {
     transition: 0.2s;
     &:hover {
         scale: 1.25;
+        cursor: grab;
     }
 }
 
@@ -268,21 +274,6 @@ h2 {
     margin-bottom: 2%;
 }
 
-.light-mode {
-    background-color: white;
-    color: black;
-}
-
-.light-mode-tile {
-    background-color: white;
-    box-shadow: 0px 0px 10px 1px rgb(223, 223, 223);
-    border: 1px solid rgb(203, 203, 203);
-}
-
-.light-mode-text {
-    color: black;
-}
-
 .session-container {
     padding: 3.5%;
     z-index: 1000;
@@ -296,6 +287,7 @@ h2 {
     width: 46.5%;
     gap: 5%;
     height: 265px;
+    padding-bottom: 5%;
 }
 
 .options-container {
@@ -316,6 +308,17 @@ h2 {
     transition: 0.3s;
     &:hover {
         scale: 1.1;
+        cursor: grab;
+    }
+}
+
+.leave-text {
+    color: grey;
+    transform: translateY(25px);
+    transition: 0.3s;
+    &:hover {
+        scale: 1.1;
+        cursor: grab;
     }
 }
 
@@ -332,10 +335,13 @@ h2 {
     padding: 5%;
     &:hover {
         scale: 1.1;
+        cursor: grab;
     }
 }
 
 .session-list-container {
+    display: flex;
+    justify-content: center;
     box-shadow: var(--box-shadow-standard);
     border: var(--border-standard);
     border-radius: var(--border-radius-standard);
@@ -355,9 +361,60 @@ h2 {
     width: 100%;
     transition: 0.3s;
     &:hover {
+        cursor: grab;
         transform: translateX(20px);
         scale: 1.05;
         color: var(--color-primary);
+    }
+}
+.progress-container {
+    width: 100%;
+    padding: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fade-in 1s forwards;
+    gap: 10%;
+  }
+  
+  .progress-circle {
+    width: 200px;
+    height: 200px;
+    background: conic-gradient(var(--color-primary) 0%, var(--color-primary) 0%, #ccc 0%);
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .progress-mask {
+    width: 180px;
+    height: 180px;
+    background-color: black;
+    border-radius: 50%;
+    position: absolute;
+  }
+  
+  .progress-percent {
+    position: absolute;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .progress-text {
+    width: 30%;
+  }
+  
+.end-text {
+    position: absolute;
+    transform: translateY(150px);
+    color: grey;
+    font-size: 0.8rem;
+    transition: 0.2s;
+    &:hover {
+        scale: 1.01;
+        color: red;
     }
 }
 
@@ -379,4 +436,19 @@ h2 {
     animation: not-visible-animation 0.5s forwards;
     display: none;
     pointer-events: none;
+}
+
+.light-mode {
+    background-color: white;
+    color: black;
+}
+
+.light-mode-tile {
+    background-color: white;
+    box-shadow: 0px 0px 10px 1px rgb(223, 223, 223);
+    border: 1px solid rgb(203, 203, 203);
+}
+
+.light-mode-text {
+    color: black;
 }
