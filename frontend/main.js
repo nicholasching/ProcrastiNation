@@ -1,4 +1,5 @@
 import { app, BrowserWindow, ipcMain, screen } from "electron";
+import { authenticateUser, getUserActivity } from "./api.js";
 import WebSocketService from "./websocket.js";
 
 let mainWindow;
@@ -131,8 +132,13 @@ app.on("activate", () => {
       },
     });
 
-    mainWindow.loadFile("index.html");
+    const res = authenticateUser();
+    store.set("user_id", res.userId);
+    store.set("name", res.name);
 
-    store.set("user_id", "12344");
+    const activityData = getUserActivity();
+    store.get("activityData", activityData);
+
+    mainWindow.loadFile("index.html");
   }
 });
