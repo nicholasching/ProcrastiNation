@@ -1,9 +1,12 @@
-// import { io } from 'socket.io-client';
+// // import { io } from 'socket.io-client';
+import Store from "electron-store";
+const store = new Store();
+import { activeWindow } from "get-windows";
 
 function isProductive(result) {
   // Mock function to check if the app is productive
   const productiveApps = [
-    "Code",
+    "Visual Studio Code",
     "Terminal",
     "Firefox",
     "Notion",
@@ -12,7 +15,6 @@ function isProductive(result) {
     "Asana",
     "Microsoft Teams",
     "Zoom",
-    "Discord",
     "Stack Overflow",
     "Medium",
     "Wikipedia",
@@ -20,6 +22,7 @@ function isProductive(result) {
     "Microsoft Excel",
     "Microsoft PowerPoint",
     "ChatGPT",
+    "Electron",
   ];
 
   // List of productive URLs (could be expanded)
@@ -59,7 +62,7 @@ function isProductive(result) {
 }
 
 class SessionTracker {
-  constructor(sessionId, userId) {
+  constructor(sessionId = null, userId = null) {
     // auto loads the activity log and checkpoints from the store
     this.activityLog = store.get("activityLog", {});
     this.checkpoints = store.get("checkpoints", []);
@@ -96,7 +99,7 @@ class SessionTracker {
     this.sessionStartTime = Date.now();
 
     this.intervalId = setInterval(async () => {
-      const result = window.windowAPI.getActiveWindow();
+      const result = await activeWindow();
       if (!result) return;
 
       const currentApp = result.owner.name;
@@ -222,7 +225,7 @@ class SessionTracker {
   loadData() {
     return {
       activityLog: this.activityLog,
-      checkpoints: this.checkpoints,
+      checkpoint: this.checkpoint,
     };
   }
 

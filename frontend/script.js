@@ -1,4 +1,8 @@
 import SessionTracker from "./tracker.js";
+// import Store from "electron-store";
+// const store = new Store();
+
+localStorage.setItem("user_id", "user1");
 
 function sendRequest(endpoint, data) {
   return fetch(`http://localhost:5000/redis/${endpoint}`, {
@@ -39,11 +43,13 @@ function joinSession(userId, sessionId) {
 }
 
 function updateSession(userId, sessionId, checkpoint) {
-  return sendRequest("update_session", {
+  const data = {
     user_id: userId,
     session_id: sessionId,
     checkpoint: checkpoint,
-  });
+  };
+  console.log(data);
+  return sendRequest("update_session", data);
 }
 
 // this exits the session and stops tracking
@@ -98,23 +104,29 @@ function fetchActiveSessions() {
 
 document.getElementById("createText").addEventListener("click", () => {
   const sessionId = document.getElementById("input").value;
+  console.log(sessionId);
+  localStorage.setItem("session_id", sessionId);
   if (sessionId) {
     startSession(sessionId).then(() => fetchActiveSessions());
   }
 });
 
-document.getElementById("joinText").addEventListener("click", () => {
-  const userId = store.get("user_id");
+document.getElementById("joinText").addEventListener("click", async () => {
+  const userId = localStorage.getItem("user_id");
   const sessionId = document.getElementById("input").value;
+
   if (userId && sessionId) {
+    console.log(`User ID: ${userId}, Session ID: ${sessionId}`);
     joinSession(userId, sessionId).then(() => fetchActiveSessions());
   }
 });
 
-document.getElementById("leaveText").addEventListener("click", () => {
-  const userId = store.get("user_id");
-  const sessionId = document.getElementById("input").value;
+document.getElementById("leaveText").addEventListener("click", async () => {
+  const userId = localStorage.getItem("user_id");
+  const sessionId = localStorage.getItem("session_id");
+
   if (userId && sessionId) {
+    console.log(`User ID: ${userId}, Session ID: ${sessionId}`);
     logoutSession(userId, sessionId).then(() => fetchActiveSessions());
   }
 });

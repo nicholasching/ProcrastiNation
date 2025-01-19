@@ -1,21 +1,25 @@
 const BASE_URL = "127.0.0.1:5000";
 // Uses Auth0 to authenticate users, return something
-export const authenticateUser = async () => {
-  const response = await fetch(`http://${BASE_URL}/auth/login`, {
-    method: "GET",
-    credentials: "include",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+export async function authenticateUser() {
+  try {
+    const response = await fetch(`http://${BASE_URL}/auth/login`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
-  const data = await response.json();
-  console.log(data.message);
-  return {
-    name: data.user_info.name,
-    userId: data.user_info.sub,
-  };
-};
+    const data = await response.json();
+    return {
+      name: data.user_info.name,
+      userId: data.user_info.sub,
+    };
+  } catch (error) {
+    console.error("Authentication error:", error);
+    throw error;
+  }
+}
 
 // Retreives data from firebase
 export const getUserActivity = async () => {
