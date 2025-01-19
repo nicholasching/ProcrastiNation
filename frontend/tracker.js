@@ -1,8 +1,4 @@
-import Store from "electron-store";
-import { activeWindow } from "get-windows";
 // import { io } from 'socket.io-client';
-
-const store = new Store();
 
 function isProductive(result) {
   // Mock function to check if the app is productive
@@ -100,7 +96,7 @@ class SessionTracker {
     this.sessionStartTime = Date.now();
 
     this.intervalId = setInterval(async () => {
-      const result = await activeWindow();
+      const result = window.windowAPI.getActiveWindow();
       if (!result) return;
 
       const currentApp = result.owner.name;

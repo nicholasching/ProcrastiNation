@@ -1,4 +1,4 @@
-import SessionTracker from "./tracker";
+import SessionTracker from "./tracker.js";
 
 function sendRequest(endpoint, data) {
   return fetch(`http://localhost:5000/redis/${endpoint}`, {
