@@ -29,6 +29,12 @@ body {
     --color-tertiary: #ff6200;
 }
 
+::placeholder {
+    color: white;
+    opacity: 0.5;
+  }
+  
+
 @keyframes fade-in {
     from {
         opacity: 0;
@@ -62,32 +68,32 @@ body {
     }
 }
 
-@keyframes server-visible-animation {
+@keyframes session-visible-animation {
     from {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(-30px);
     }
     to {
         opacity: 1;
-        transform: translateX(0);
+        transform: translateY(0);
     }
 }
 
-@keyframes server-not-visible-animation {
+@keyframes session-not-visible-animation {
     from {
         opacity: 1;
-        transform: translateX(0);
+        transform: translateY(0);
     }
     to {
         opacity: 0;
-        transform: translateY(30px);
+        transform: translateY(-30px);
     }
 }
 
 
 .main-title {
     margin-bottom: 1%;
-    font-size: var(--font-bigger);
+    font-size: clamp(1.5rem, 1.5vw, 10rem);
 }
 
 p {
@@ -124,6 +130,11 @@ h2 {
 
 .username-setting-element {
     padding: 1%;
+    transition: 0.2s;
+    &:hover {
+        scale: 1.05;
+        cursor: grab;
+    }
 }
 
 .settings-menu {
@@ -141,6 +152,7 @@ h2 {
     transition: 0.2s;
     &:hover {
         scale: 1.25;
+        cursor: grab;
     }
 }
 
@@ -262,6 +274,170 @@ h2 {
     margin-bottom: 2%;
 }
 
+.session-container {
+    padding: 3.5%;
+    z-index: 1000;
+    position: absolute;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 3%;
+    margin-top: 6%;
+    width: 46.5%;
+    gap: 5%;
+    height: 265px;
+    padding-bottom: 5%;
+}
+
+.options-container {
+    display: flex;
+    flex-direction: column;
+    width: 40%;
+    padding: 3%;
+    text-align: center;
+    box-shadow: var(--box-shadow-standard);
+    border: var(--border-standard);
+    border-radius: var(--border-radius-standard);
+    height: 100%;
+}
+
+.create-text {
+    color: var(--color-primary);
+    margin-bottom: 10%;
+    transition: 0.3s;
+    &:hover {
+        scale: 1.1;
+        cursor: grab;
+    }
+}
+
+.leave-text {
+    color: grey;
+    transform: translateY(25px);
+    transition: 0.3s;
+    &:hover {
+        scale: 1.1;
+        cursor: grab;
+    }
+}
+
+.join-input {
+    width: 75%;
+    margin: 5% auto;
+    box-shadow: var(--box-shadow-standard);
+    border: var(--border-standard);
+    border-radius: 5px;
+    transition: 0.3s;
+    background-color: var(--color-primary);
+    text-align: center;
+    color: white;
+    padding: 5%;
+    &:hover {
+        scale: 1.1;
+        cursor: grab;
+    }
+}
+
+.session-list-container {
+    display: flex;
+    justify-content: center;
+    box-shadow: var(--box-shadow-standard);
+    border: var(--border-standard);
+    border-radius: var(--border-radius-standard);
+    height: 100%;
+    padding: 3%;
+    width: 60%;
+    overflow-y: scroll;
+    scrollbar-width: thin;
+    scrollbar-color: #333333 rgba(0, 0, 0, 0);
+    overflow-x: hidden;
+    height: 100%;
+}
+
+.session {
+    margin-bottom: 2%;
+    padding: 1%;
+    width: 100%;
+    transition: 0.3s;
+    &:hover {
+        cursor: grab;
+        transform: translateX(20px);
+        scale: 1.05;
+        color: var(--color-primary);
+    }
+}
+.progress-container {
+    width: 100%;
+    padding: 10%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: fade-in 1s forwards;
+    gap: 10%;
+  }
+  
+  .progress-circle {
+    width: 200px;
+    height: 200px;
+    background: conic-gradient(var(--color-primary) 0%, var(--color-primary) 0%, #ccc 0%);
+    border-radius: 50%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .progress-mask {
+    width: 180px;
+    height: 180px;
+    background-color: black;
+    border-radius: 50%;
+    position: absolute;
+  }
+  
+  .progress-percent {
+    position: absolute;
+    font-size: 24px;
+    font-weight: bold;
+  }
+
+  .progress-text {
+    width: 30%;
+  }
+  
+.end-text {
+    position: absolute;
+    transform: translateY(150px);
+    color: grey;
+    font-size: 0.8rem;
+    transition: 0.2s;
+    &:hover {
+        scale: 1.01;
+        color: red;
+    }
+}
+
+.session-visible {
+    animation: session-visible-animation 0.5s forwards;
+}
+
+.session-not-visible {
+    animation: session-not-visible-animation 0.5s forwards;
+    display: none;
+    pointer-events: none;
+}
+
+.visible {
+    animation: visible-animation 0.5s forwards;
+}
+
+.not-visible {
+    animation: not-visible-animation 0.5s forwards;
+    display: none;
+    pointer-events: none;
+}
+
 .light-mode {
     background-color: white;
     color: black;
@@ -275,106 +451,4 @@ h2 {
 
 .light-mode-text {
     color: black;
-}
-
-.server-container {
-    z-index: 1000;
-    position: absolute;
-    right: 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-right: 3%;
-    margin-top: 5%;
-    width: 30%;
-    gap: 5%;
-    height: 30vh;
-}
-
-.options-container {
-    display: flex;
-    flex-direction: column;
-    width: 30%;
-    padding: 3%;
-    text-align: center;
-    box-shadow: var(--box-shadow-standard);
-    border: var(--border-standard);
-    border-radius: var(--border-radius-standard);
-    height: 100%;
-    background-color: black;
-}
-
-.create-text {
-    color: var(--color-primary);
-    margin-bottom: 20%;
-    transition: 0.3s;
-    &:hover {
-        scale: 1.1;
-    }
-}
-
-.join-input {
-    width: 75%;
-    margin: 5% auto;
-    background-color: black;
-    box-shadow: var(--box-shadow-standard);
-    border: var(--border-standard);
-    border-radius: 5px;
-    transition: 0.3s;
-    &:hover {
-        scale: 1.1;
-    }
-}
-
-.server-list-container {
-    box-shadow: var(--box-shadow-standard);
-    border: var(--border-standard);
-    border-radius: var(--border-radius-standard);
-    height: 100%;
-    padding: 3%;
-    width: 60%;
-    overflow-y: scroll;
-    scrollbar-width: thin;
-    scrollbar-color: #333333 rgba(0, 0, 0, 0);
-    overflow-x: hidden;
-    background-color: black;
-}
-
-.server {
-    margin-bottom: 2%;
-    padding: 1%;
-    width: 100%;
-    transition: 0.3s;
-    &:hover {
-        transform: translateX(20px);
-        scale: 1.05;
-        color: var(--color-primary);
-    }
-}
-
-.server-visible {
-    animation: server-visible-animation 0.5s forwards;
-}
-
-.server-not-visible {
-    animation: server-not-visible-animation 0.5s forwards;
-    display: none;
-}
-
-.visible {
-    animation: visible-animation 0.5s forwards;
-}
-
-.not-visible {
-    animation: not-visible-animation 0.5s forwards;
-    display: none;
-    pointer-events: none;
-}
-
-#logoutButton {
-    cursor: pointer;
-}
-
-#logoutButton:hover {
-    background-color: var(--color-primary);
 }

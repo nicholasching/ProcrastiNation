@@ -1,17 +1,42 @@
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    overflow: hidden;
+.body {
+    background-color: white;
+    overflow-y: hidden;
 }
 
-.glow {
-    margin: 20% auto 0 auto;
-    position: fixed;
-    width: 100%;
-    top: 0;
-    height: 100vh;
-    pointer-events: none;
-    background-color: black;
-    z-index: 10001;
+@keyframes movement {
+    from {
+        transform: translate(0, 0);
+    }
+    25% {
+        transform: translate(0, 0);
+    }
+    to {
+        transform: translate(0, 0);
+    }
+}
+
+.text {
+    font-size: 1.25rem;
+    color: black;
+    font-family: "Inter", serif;
+    margin: 20% 10% 0 10%;
+    text-align: center;
+}
+
+.skull {
+    font-size: 10rem;
+    margin: 15% auto 0 auto;
+    text-align: center;
+}
+
+.close-button {
+    font-family: "Inter", serif;
+    color: white;
+    font-size: 1.25rem;
+    margin: 10% auto 0 auto;
+    text-align: center;
+    width: 60%;
+    background: #df5e0e;
+    border-radius: 5px;
+    padding: 2%;
 }

@@ -1,70 +1,14 @@
 import { app, BrowserWindow, ipcMain, screen } from "electron";
-import { shell } from 'electron';
-import Store from 'electron-store';
-import { auth0Config } from "./auth/config.js"
-import sessionTracker from './tracker.js'
+import SessionTracker from "./tracker.js";
+import WebSocketService from "./websocket.js";
 
+let sessionTracker = new SessionTracker();
 let mainWindow;
-let booWindow;
+let intervalId = null;
+let booWindow = null;
 let notifWindow;
-let minimizedTime = null;
-
-const store = new Store({
-  name: 'auth',
-  defaults: {
-    userId: null,
-    userName: null
-  }
-});
-
-const API_URL = 'http://localhost:5000'; 
-
-function createMainWindow() {
-  const primaryDisplay = screen.getPrimaryDisplay();
-  const { width, height } = primaryDisplay.workAreaSize;
-  
-  mainWindow = new BrowserWindow({
-    width: width,
-    height: height,
-    webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false
-    }
-  });
-
-  mainWindow.loadFile('index.html');
-  checkAuth();
-}
-
-function checkAuth() {
-  store.clear(); 
-  shell.openExternal(`${API_URL}/auth/login`);
-  if (mainWindow) {
-    mainWindow.hide();
-  }
-}
-
-ipcMain.on('auth-callback', (event, data) => {
-  const { user_info } = data;
-  store.set('userId', user_info.sub);
-  store.set('userName', user_info.name);
-  
-  if (mainWindow) {
-    mainWindow.show();
-    mainWindow.webContents.send('user-data', {
-      id: user_info.sub,
-      name: user_info.name
-    });
-  }
-});
-
-ipcMain.on('logout', () => {
-  store.clear();
-  shell.openExternal(`${API_URL}/auth/logout`);
-  if (mainWindow) {
-    mainWindow.hide();
-  }
-});
+let minimizedTime = null; // Track when the main window was minimized
+let booTimeout = null; // Store the timeout ID
 
 function createBooWindow() {
   const primaryDisplay = screen.getPrimaryDisplay();
@@ -80,75 +24,95 @@ function createBooWindow() {
     hasShaodw: false,
     show: false,
     webPreferences: {
-        nodeIntegration: true,
-        contextIsolation: false,
+      nodeIntegration: true,
+      contextIsolation: false,
     },
   });
 
   booWindow.loadFile("glow.html");
   booWindow.setIgnoreMouseEvents(true);
 
-  booWindow.once('ready-to-show', () => {
-      booWindow.show();
+  booWindow.once("ready-to-show", () => {
+    booWindow.show();
   });
 
-  booWindow.on('closed', () => {
-      booWindow = null; // Clear reference to boo window when it's closed
-  })
+  booWindow.on("closed", () => {
+    booWindow = null; // Clear reference to boo window when it's closed
+  });
 }
 
-function createNotifWindow(){
+function createNotifWindow() {
   const primaryDisplay = screen.getPrimaryDisplay();
   const { width, height } = primaryDisplay.workAreaSize;
   notifWindow = new BrowserWindow({
-    width: width/4,
-    height: height/1.5,
+    width: width / 4,
+    height: height / 1.75,
     frame: false,
     alwaysOnTop: true,
     skipTaskbar: true,
-    transparent: true,
     hasShadow: false,
+    resizable: false,
     show: false,
     webPreferences: {
-        nodeIntegration: true,
-        contextIsolation: false,
+      nodeIntegration: true,
+      contextIsolation: false,
     },
   });
+
+  notifWindow.setIgnoreMouseEvents(false);
   notifWindow.loadFile("notif.html");
 
-  notifWindow.once('ready-to-show', () => {
-      notifWindow.show();
+  notifWindow.once("ready-to-show", () => {
+    notifWindow.show();
   });
 
-  notifWindow.on('closed', () => {
-      notifWindow = null; // Clear reference to boo window when it's closed
-  })
+  notifWindow.on("closed", () => {
+    notifWindow = null; // Clear reference to notifWindow when closed
+  });
 }
+
+// Listen for the close button click from notif.html
+ipcMain.on("close-notif-window", () => {
+  if (notifWindow) {
+    notifWindow.close();
+    notifWindow = null;
+  }
+});
 
 function checkMinimize() {
   if (mainWindow?.isMinimized()) {
     if (!minimizedTime) {
       minimizedTime = Date.now();
     }
+    //Check if minimized for 3 seconds, if so make the boo window
     if (Date.now() - minimizedTime >= 3000 && !booWindow) {
       createBooWindow();
       createNotifWindow();
     }
   } else {
     minimizedTime = null;
+    if (booTimeout) clearTimeout(booTimeout);
   }
 }
 
-app.whenReady().then(createMainWindow);
+app.whenReady().then(() => {
+  const primaryDisplay = screen.getPrimaryDisplay();
+  const { width, height } = primaryDisplay.workAreaSize;
+  mainWindow = new BrowserWindow({
+    x: 0,
+    y: 0,
+    width: width,
+    height: height,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+    },
+  });
 
+  mainWindow.loadFile("index.html");
 
-ipcMain.on('auth-success', (event, token) => {
-  if (authWindow) {
-    authWindow.close();
-  }
-  if (mainWindow) {
-    mainWindow.show();
-  }
+  // Set up interval to check for minimize status
+  setInterval(checkMinimize, 1000);
 });
 
 // Listen for "start-session" from renderer process
@@ -187,8 +151,10 @@ app.on("activate", () => {
       width: 800,
       height: 600,
       webPreferences: {
-        nodeIntegration: true,
-        contextIsolation: false,
+        preload: path.join(__dirname, "preload.js"), // Load preload script
+        contextIsolation: true, // Recommended for security
+        enableRemoteModule: false, // Disable remote module
+        nodeIntegration: false, // Prevent direct Node.js access in renderer
       },
     });
 

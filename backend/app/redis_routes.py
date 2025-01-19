@@ -74,7 +74,7 @@ def join_session():
 
     return jsonify({'message': 'User successfully joined the session!'})
 
-@redis_routes.route('/set_session', methods=['POST'])
+@redis_routes.route('/update_session', methods=['POST'])
 def set_session():
     data = request.json
     user_id = data['user_id']
@@ -175,3 +175,13 @@ def get_session():
         return jsonify({'user_data': user_data})
     else:
         return jsonify({'error': 'No active session for the user.'}), 404
+
+@redis_routes.route('/get_active_sessions', methods=['GET'])
+def get_active_sessions():
+    session_keys = redis_client.keys("session:*")  # Fetch all keys matching the pattern
+    session_ids = {
+        key.split(":")[1]  # Extract the session ID
+        for key in session_keys
+        if key.startswith("session:")  # Ensure valid session keys
+    }
+    return jsonify({"sessions": list(session_ids)})
