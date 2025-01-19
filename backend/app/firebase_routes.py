@@ -84,34 +84,26 @@ from firebase_admin import firestore
 @firebase_bp.route('/activity/batch', methods=['GET'])
 def get_multiple_activities():
     try:
-        # Get and validate IDs from request
-        data = request.get_json()
-        if not data or 'ids' not in data:
-            return jsonify({'error': 'No document IDs provided'}), 400
-            
-        doc_ids = data['ids']
-        if not isinstance(doc_ids, list):
-            return jsonify({'error': 'IDs must be provided as an array'}), 400
-            
-        # Convert all IDs to strings
-        doc_ids = [str(id) for id in doc_ids]
+        # Get document IDs from query parameters
+        doc_ids = request.args.getlist('ids')  # e.g., ?ids=1&ids=2&ids=3
         
+        if not doc_ids:
+            return jsonify({'error': 'No document IDs provided'}), 400
+
+        # Get Firestore reference
         db = firestore.client()
         activity_ref = db.collection('activity')
         
         # Fetch all specified documents
         activities = []
         for doc_id in doc_ids:
-            doc = activity_ref.document(doc_id).get()
+            doc = activity_ref.document(str(doc_id)).get()
             if doc.exists:
                 activities.append({
                     'id': doc.id,
                     **doc.to_dict()
                 })
         
-        if not activities:
-            return jsonify({'error': 'No documents found'}), 404
-            
         return jsonify(activities), 200
         
     except Exception as e:

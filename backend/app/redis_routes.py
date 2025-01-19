@@ -185,3 +185,33 @@ def get_active_sessions():
         if key.startswith("session:")  # Ensure valid session keys
     }
     return jsonify({"sessions": list(session_ids)})
+
+@redis_routes.route('/get_messages', methods=['GET'])
+def get_messages():
+    session_id = request.args.get('session_id')
+    if not session_id:
+        return jsonify({'error': 'Session ID is required'}), 400
+
+    session_key = f"{SESSION_PREFIX}{session_id}"
+    
+    if not redis_client.exists(session_key):
+        return jsonify({'error': 'Session does not exist'}), 404
+        
+    messages_key = f"{session_key}:messages"
+    messages = []
+    
+    message_count = redis_client.llen(messages_key)
+    if message_count > 0:
+        raw_messages = redis_client.lrange(messages_key, 0, -1)
+        for msg in raw_messages:
+            try:
+                message_data = json.loads(msg)
+                messages.append(message_data)
+            except json.JSONDecodeError:
+                continue
+    
+    return jsonify({
+        'messages': messages,
+        'session_id': session_id,
+        'message_count': len(messages)
+    })

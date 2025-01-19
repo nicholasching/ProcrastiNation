@@ -551,3 +551,44 @@ h2 {
 .light-mode-text {
     color: black;
 }
+
+.chat-container {
+    padding: 20px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .messages {
+    height: 200px;
+    overflow-y: auto;
+    margin: 10px 0;
+  }
+  
+  .chat-input-container {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .chat-input {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    background: var(--color-background-darker);
+  }
+  
+  .chat-send {
+    padding: 10px 20px;
+    background: var(--color-primary);
+    border: none;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .messages p {
+    margin: 5px 0;
+    padding: 5px 10px;
+    background: var(--color-background-darker);
+    border-radius: 5px;
+  }

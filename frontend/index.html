@@ -30,7 +30,7 @@
     />
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
     <script type="module" src="./script.js"></script>
     <script type="module" src="./tracker.js"></script>
   </head>
@@ -200,19 +200,23 @@
               <h2><span class="color">20 minutes</span> of Discord today</h2>
             </div>
           </div>
-          <div class="leaderboard-container color-tile tile">
-            <p class="black">Leaderboard</p>
-            <h2 class="leaderboard-title">Most Productive Friends Today</h2>
-            <div class="leaderboard-person">
-              <p class="black"><i class="fa-solid fa-user color"></i> John</p>
-            </div>
-            <div class="leaderboard-person">
-              <p class="black"><i class="fa-solid fa-user color"></i> Bob</p>
-            </div>
-            <div class="leaderboard-person">
-              <p class="black"><i class="fa-solid fa-user color"></i> Dan</p>
-            </div>
+<!-- Add this where you want the chat to appear -->
+        <div class="chat-container tile">
+          <p>Session Chat</p>
+          <div class="messages" id="messages"></div>
+          <div class="chat-input-container">
+            <input 
+              type="text" 
+              id="messageInput" 
+              class="chat-input tile" 
+              placeholder="Type a message..."
+              style="color: white"
+            />
+            <button id="sendMessageBtn" class="chat-send tile">
+              <i class="fa-solid fa-paper-plane"></i>
+            </button>
           </div>
+        </div>
         </div>
       </div>
 
