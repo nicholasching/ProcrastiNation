@@ -41,8 +41,57 @@ function endSession(sessionId) {
   return sendRequest("end_session", { session_id: sessionId });
 }
 
-function getActiveSessions() {
-  return fetch("http://localhost:5000/redis/get_active_sessions").then((res) =>
-    res.json()
-  );
+function fetchActiveSessions() {
+  return fetch("http://localhost:5000/redis/get_active_sessions")
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error(`HTTP error! status: ${res.status}`);
+      }
+      return res.json();
+    })
+    .then((data) => {
+      console.log("Active Sessions:", data);
+
+      const sessionListContainer = document.querySelector(
+        ".session-list-container"
+      );
+
+      // Ensure the container exists in the DOM
+      if (!sessionListContainer) {
+        console.error("Session list container not found in the DOM.");
+        return;
+      }
+
+      sessionListContainer.innerHTML = ""; // Clear existing sessions
+
+      // Loop through the sessions array
+      data.sessions.forEach((sessionId) => {
+        const sessionDiv = document.createElement("div");
+        sessionDiv.textContent = `Session ID: ${sessionId}`;
+        sessionDiv.className = "session-item"; // Optional: Add a class for styling
+        sessionListContainer.appendChild(sessionDiv);
+      });
+
+      return data.sessions; // Return sessions for further use if needed
+    })
+    .catch((error) => {
+      console.error("Error fetching active sessions:", error);
+    });
 }
+
+setInterval(fetchActiveSessions, 1000);
+
+document.getElementById("createSession").addEventListener("click", () => {
+  const sessionId = document.getElementById("input").value;
+  if (sessionId) {
+    startSession(sessionId).then(() => fetchActiveSessions());
+  }
+});
+
+document.getElementById("joinSession").addEventListener("click", () => {
+  const userId = store.get("user_id");
+  const sessionId = document.getElementById("input").value;
+  if (userId && sessionId) {
+    joinSession(userId, sessionId).then(() => fetchActiveSessions());
+  }
+});
