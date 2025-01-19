@@ -76,5 +76,8 @@ def create_app():
     
     from app.redis_routes import redis_routes
     app.register_blueprint(redis_routes, url_prefix='/redis')
+
+    from app.ai_routes import notification_bp
+    app.register_blueprint(notification_bp, url_prefix='/notification')
     
     return app
