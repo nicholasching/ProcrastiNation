@@ -99,18 +99,19 @@
               <h2 class="progress-percent">0%</h2>
             </div>
             <div class="progress-text">
-              <p>Progress Tracker</p>
+              <p style="margin-bottom: 10px;">Progress Tracker</p>
               <h2>You are almost at your goal of <span style="color: var(--color-primary);">8 hours</span> of productivity!</h2>
               <h2 id="arrow1" class="arrow"><i class="fa-solid fa-arrow-right"></i></h2>
             </div>
           </div>
           <div class="progress-container-2 tile not-visible" id="progressContainer2">
+            <p style="position: absolute; top: 30px; left: 30px;">Pomodoro Timer</p>
             <div class="progress-circle-2">
-              <div class="progress-mask-2"></div>
+              <div class="progress-mask-2" id="progressMask2"></div>
               <div class="progress-percent-2">25:00</div>
             </div>
             <div class="timer-controls">
-              <input type="number" id="timerMinutes" class="timer-input" value="25" min="1" max="60"> minutes
+              <input type="number" id="timerMinutes" class="timer-input" value="25" min="1" max="60">minutes
               <button id="startButton" class="timer-button">Start</button>
               <button id="resetButton" class="timer-button">Reset</button>
             </div>
@@ -148,15 +149,14 @@
 
           <div class="box-container">
             <div class="box tile">
-              <p>Highlight</p>
-              <h2>
-                <span class="color">Bob</span> has a highscore on time spent
-                unproductive!
+              <p>Motivational Quote</p>
+              <h2 class="motivation-text" id="motivationText">
+                Motivation Text
               </h2>
             </div>
             <div class="box tile">
               <p>Statistics</p>
-              <h2><span class="color">200h</span> of Discord total</h2>
+              <h2><span class="color">20 minutes</span> of Discord today</h2>
             </div>
           </div>
           <div class="leaderboard-container color-tile tile">
@@ -195,6 +195,7 @@
     const paragraph = document.querySelectorAll("p");
     const lightModeIcon = document.getElementById("lightModeIcon")
     const progressMask = document.getElementById("progressMask");
+    const progressMask2 = document.getElementById("progressMask2");
 
       lightMode.addEventListener("click", () => {
         document.body.classList.toggle("light-mode");
@@ -208,6 +209,7 @@
       });
       lightModeIcon.classList.toggle("light-mode-text");
       progressMask.classList.toggle("light-mode")
+      progressMask2.classList.toggle("light-mode")
     });
 
       const theme1 = document.getElementById("theme1");
@@ -414,7 +416,62 @@
     // Initialize the timer display
     updateProgressCircle(remainingTime, timerDuration);
 
-          
+// Reference the HTML element
+let motivationText = document.getElementById("motivationText");
+
+// Array of quotes
+const quotes = [
+  "Every great achievement begins with a single step",
+  "Success comes from consistency and dedication",
+  "Small changes lead to big transformations over time",
+  "Dreams become reality when we take action",
+  "Progress is better than perfection every time",
+  "The best way to succeed is to start now",
+  "Confidence is key to overcoming challenges",
+  "Everything seems impossible until it’s accomplished",
+  "The future is shaped by what you do today",
+  "Do what is necessary now to get where you want to go",
+  "Struggles pave the way for future success",
+  "Believe in the impossible to make it achievable",
+  "Keep moving forward and time will work for you",
+  "Success requires effort and persistence",
+  "Your mindset is what determines your success",
+  "Create your future with the choices you make today",
+  "A small step today can lead to a giant leap tomorrow",
+  "Focus on the present and everything else will fall into place",
+  "Every journey begins with the first step",
+  "Make the most of what you have and where you are",
+  "You must begin in order to achieve greatness",
+  "Success comes to those who never give up",
+  "Hard work brings immense satisfaction when it pays off",
+  "Work with passion and rest with satisfaction",
+  "Finish what you started, no matter how tired you are",
+  "Push yourself further, there’s always more to give",
+  "Daily progress leads to remarkable results",
+  "Dream big and turn those dreams into action",
+  "Focus on what you want, not on what stands in the way",
+  "Challenges bring meaning and purpose to life",
+  "Don’t wait for the perfect moment, create it",
+  "You are stronger than any challenge you face",
+  "Believe in your abilities and take action",
+  "Start now, and you will reach your goals",
+  "Your potential is unlimited if you keep moving forward",
+  "Invest in today for a better tomorrow",
+  "Learn from the past, live in the present, plan for the future",
+  "Discipline turns goals into accomplishments",
+  "The little extra effort makes all the difference",
+  "Create opportunities by taking action, not waiting",
+  "Yesterday is gone, focus on today"
+];
+
+
+
+// Generate a random index
+let x = Math.floor(Math.random() * quotes.length);
+
+// Set the quote in the HTML element
+motivationText.innerHTML = quotes[x];
+
 
     </script>
   </body>

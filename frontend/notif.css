@@ -1,4 +1,4 @@
-.body {
+* {
     overflow-y: hidden;
 }
 
@@ -24,7 +24,7 @@
 
 .skull {
     font-size: 10rem;
-    margin: 15% auto 0 auto;
+    margin: 10% auto 0 auto;
     text-align: center;
 }
 
@@ -32,7 +32,7 @@
     font-family: "Inter", serif;
     color: white;
     font-size: 1.25rem;
-    margin: 10% auto 0 auto;
+    margin: 5% auto 0 auto;
     text-align: center;
     width: 60%;
     background: #df5e0e;
