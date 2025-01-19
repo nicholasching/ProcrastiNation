@@ -8,6 +8,7 @@ from .firebase_routes import firebase_bp
 from flask_socketio import SocketIO, emit
 import redis
 from flask_session import Session
+from flask_cors import CORS
 
 # Load environment variables from .env
 load_dotenv()
@@ -55,17 +56,16 @@ def firebase_init():
     firebase_admin.initialize_app(cred)
 
 def create_app():
-    # Initialize Firebase first
     firebase_init()
-    
-    # Create Flask app
+
     app = Flask(__name__)
+    socketio = init_socketio(app)
+
+    CORS(app) 
     app.config["SECRET_KEY"] = os.getenv("APP_SECRET_KEY")
     
-    # Initialize all services
     auth0 = auth0_init(app)
     session_init(app)
-    init_socketio(app)
     
     # Register blueprints
     app.register_blueprint(firebase_bp, url_prefix='/api')
@@ -79,5 +79,5 @@ def create_app():
 
     from app.ai_routes import notification_bp
     app.register_blueprint(notification_bp, url_prefix='/notification')
-    
-    return app
+        
+    return app, socketio
