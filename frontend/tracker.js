@@ -1,12 +1,12 @@
 // // import { io } from 'socket.io-client';
-// import Store from "electron-store";
-// const store = new Store();
-// import getActiveWindow from "get-windows";
+import Store from "electron-store";
+const store = new Store();
+import { activeWindow } from "get-windows";
 
 function isProductive(result) {
   // Mock function to check if the app is productive
   const productiveApps = [
-    "Code",
+    "Visual Studio Code",
     "Terminal",
     "Firefox",
     "Notion",
@@ -15,7 +15,6 @@ function isProductive(result) {
     "Asana",
     "Microsoft Teams",
     "Zoom",
-    "Discord",
     "Stack Overflow",
     "Medium",
     "Wikipedia",
@@ -23,6 +22,7 @@ function isProductive(result) {
     "Microsoft Excel",
     "Microsoft PowerPoint",
     "ChatGPT",
+    "Electron",
   ];
 
   // List of productive URLs (could be expanded)
@@ -64,8 +64,8 @@ function isProductive(result) {
 class SessionTracker {
   constructor(sessionId = null, userId = null) {
     // auto loads the activity log and checkpoints from the store
-    this.activityLog = JSON.parse(localStorage.getItem("activityLog")) || {};
-    this.checkpoints = JSON.parse(localStorage.getItem("checkpoints")) || [];
+    this.activityLog = store.get("activityLog", {});
+    this.checkpoints = store.get("checkpoints", []);
 
     // Initialize session variables
     this.intervalId = null;
@@ -99,7 +99,7 @@ class SessionTracker {
     this.sessionStartTime = Date.now();
 
     this.intervalId = setInterval(async () => {
-      const result = await window.windowTracker.getWindows();
+      const result = await activeWindow();
       if (!result) return;
 
       const currentApp = result.owner.name;
@@ -217,8 +217,8 @@ class SessionTracker {
 
   // Function to save data
   saveData() {
-    localStorage.setItem("activityLog", JSON.stringify(this.activityLog));
-    localStorage.setItem("checkpoints", JSON.stringify(this.checkpoints));
+    store.set("activityLog", this.activityLog);
+    store.set("checkpoints", this.checkpoints);
   }
 
   // Function to load data

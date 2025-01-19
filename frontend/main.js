@@ -2,6 +2,7 @@ import { app, BrowserWindow, ipcMain, screen } from "electron";
 import path from "path";
 import { getAIRoast, authenticateUser, getUserActivity } from "./api.js";
 import { playAudioFile } from "audic";
+import SessionTracker from "./tracker.js";
 // import Store from "electron-store";
 // const store = new Store();
 import WebSocketService from "./websocket.js";
@@ -11,6 +12,9 @@ let booWindow = null;
 let notifWindow;
 let minimizedTime = null; // Track when the main window was minimized
 let booTimeout = null; // Store the timeout ID
+
+const tracker = new SessionTracker();
+tracker.startSession();
 
 function createBooWindow() {
   const primaryDisplay = screen.getPrimaryDisplay();
@@ -28,7 +32,6 @@ function createBooWindow() {
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
-      preload: path.join(__dirname, "preload.js"),
     },
   });
 
@@ -60,7 +63,6 @@ async function createNotifWindow() {
     webPreferences: {
       nodeIntegration: false,
       contextIsolation: true,
-      preload: path.join(__dirname, "preload.js"),
     },
   });
 
@@ -94,12 +96,28 @@ ipcMain.on("close-notif-window", () => {
   }
 });
 
+let downtime = 0;
 function checkMinimize() {
+  if (!tracker.currentProductive) {
+    downtime += 1;
+  } else {
+    downtime = 0;
+  }
+
+  if (downtime >= 3) {
+    if (!booWindow) {
+      createBooWindow();
+      createNotifWindow();
+    }
+  } else {
+    if (booTimeout) clearTimeout(booTimeout);
+  }
+
   if (mainWindow?.isMinimized()) {
     if (!minimizedTime) {
       minimizedTime = Date.now();
     }
-    //Check if minimized for 3 seconds, if so make the boo window
+    // Check if minimized for 3 seconds, if so make the boo window and notification window
     if (Date.now() - minimizedTime >= 3000 && !booWindow) {
       createBooWindow();
       createNotifWindow();

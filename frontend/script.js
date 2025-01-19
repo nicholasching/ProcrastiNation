@@ -3,7 +3,6 @@ import SessionTracker from "./tracker.js";
 // const store = new Store();
 
 localStorage.setItem("user_id", "user1");
-const tracker = new SessionTracker();
 
 function sendRequest(endpoint, data) {
   return fetch(`http://localhost:5000/redis/${endpoint}`, {
