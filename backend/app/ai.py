@@ -13,7 +13,7 @@ class Ai:
     
     def loadProfiles(self):
         # Temp load prof 1
-        self.profiles.append([["STH_FE", "failure"], ["STH-WG", "what you doing?"], ["STH-WL", "what the helllll"]])
+        self.profiles.append([["STH_FE", "failure"], ["STH-WL", "what the helllll"]])
 
         # Temp load prof 2
         self.profiles.append(["UKR_HA", "haiyaa"], )

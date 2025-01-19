@@ -34,3 +34,24 @@ export const getUserActivity = async () => {
   console.log(data);
   return activityData;
 };
+
+export const getAIRoast = async (userId, friend, app) => {
+  const response = await fetch(
+    `http://${BASE_URL}/notification/generate-notification`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        user_id: userId,
+        friend_name: friend,
+        app: app,
+      }),
+    }
+  );
+
+  const data = await response.json();
+  console.log(data);
+  return data;
+};

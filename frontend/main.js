@@ -1,5 +1,8 @@
 import { app, BrowserWindow, ipcMain, screen } from "electron";
-import { authenticateUser, getUserActivity } from "./api.js";
+import { getAIRoast, authenticateUser, getUserActivity } from "./api.js";
+import { playAudioFile } from "audic";
+import Store from "electron-store";
+const store = new Store();
 import WebSocketService from "./websocket.js";
 
 let mainWindow;
@@ -39,9 +42,10 @@ function createBooWindow() {
   });
 }
 
-function createNotifWindow() {
+async function createNotifWindow() {
   const primaryDisplay = screen.getPrimaryDisplay();
   const { width, height } = primaryDisplay.workAreaSize;
+
   notifWindow = new BrowserWindow({
     width: width / 4,
     height: height / 1.75,
@@ -58,14 +62,24 @@ function createNotifWindow() {
   });
 
   notifWindow.setIgnoreMouseEvents(false);
-  notifWindow.loadFile("notif.html");
+  await notifWindow.loadFile("notif.html");
 
+  // Wait for AI data to be fetched
+  const data = await getAIRoast(store.get("user_id"), "chi", "instagram");
+
+  // Show the notification window after it's ready
   notifWindow.once("ready-to-show", () => {
+    notifWindow.webContents.send("notification-data", data);
     notifWindow.show();
   });
 
+  // Play the audio file (adjust based on your data)
+  await playAudioFile("audio/test.mp3");
+  console.log("Played audio file");
+
+  // Clear the reference to notifWindow when closed
   notifWindow.on("closed", () => {
-    notifWindow = null; // Clear reference to notifWindow when closed
+    notifWindow = null;
   });
 }
 
@@ -132,7 +146,7 @@ app.on("activate", () => {
       },
     });
 
-    const res = authenticateUser();
+    // const res = authenticateUser();
     store.set("user_id", res.userId);
     store.set("name", res.name);
 

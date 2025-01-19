@@ -1,4 +1,4 @@
-const { contextBridge } = require("electron");
+const { contextBridge, ipcRenderer } = require("electron");
 const Store = require("electron-store");
 
 const store = new Store();
@@ -16,4 +16,10 @@ contextBridge.exposeInMainWorld("windowAPI", {
     const result = await activeWindow();
     return result;
   },
+});
+
+contextBridge.exposeInMainWorld("electronAPI", {
+  onNotificationData: (callback) =>
+    ipcRenderer.on("notification-data", (event, data) => callback(data)),
+  sendCloseNotification: () => ipcRenderer.send("close-notif-window"),
 });
