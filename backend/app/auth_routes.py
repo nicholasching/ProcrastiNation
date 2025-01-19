@@ -2,8 +2,7 @@ from flask import Blueprint, request, redirect, session, url_for, jsonify
 from firebase_admin import auth as firebase_auth
 from firebase_admin import firestore
 from datetime import datetime
-import re
-import os
+import re, os
 
 auth_bp = Blueprint("auth", __name__)
 auth0 = None 

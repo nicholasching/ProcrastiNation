@@ -1,10 +1,8 @@
 import { app, BrowserWindow, ipcMain, screen } from "electron";
-import SessionTracker from "./tracker.js";
+import { authenticateUser, getUserActivity } from "./api.js";
 import WebSocketService from "./websocket.js";
 
-let sessionTracker = new SessionTracker();
 let mainWindow;
-let intervalId = null;
 let booWindow = null;
 let notifWindow;
 let minimizedTime = null; // Track when the main window was minimized
@@ -115,30 +113,6 @@ app.whenReady().then(() => {
   setInterval(checkMinimize, 1000);
 });
 
-// Listen for "start-session" from renderer process
-ipcMain.on("start-session", () => {
-  sessionTracker.startSession();
-  // Generate checkpoints every 10 seconds
-  // intervalId = setInterval(() => {
-  //   sessionTracker.generateCheckpoint();
-  // }, 10000);
-});
-
-// Listen for "end-session" from renderer process
-ipcMain.on("end-session", () => {
-  sessionTracker.endSession();
-  const { activityLog, checkpoints } = sessionTracker.loadData();
-  console.log("Final Activity Log:", activityLog);
-  console.log("Final Checkpoints:", checkpoints);
-  clearInterval(intervalId);
-});
-
-// Listen for "clear-session" from renderer process
-ipcMain.on("clear-session", () => {
-  sessionTracker.clearData();
-  console.log("Data cleared!");
-});
-
 app.on("window-all-closed", () => {
   if (process.platform !== "darwin") {
     app.quit();
@@ -157,6 +131,13 @@ app.on("activate", () => {
         nodeIntegration: false, // Prevent direct Node.js access in renderer
       },
     });
+
+    const res = authenticateUser();
+    store.set("user_id", res.userId);
+    store.set("name", res.name);
+
+    const activityData = getUserActivity();
+    store.get("activityData", activityData);
 
     mainWindow.loadFile("index.html");
   }
