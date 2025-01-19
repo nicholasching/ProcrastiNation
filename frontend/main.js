@@ -1,12 +1,12 @@
 import { app, BrowserWindow, ipcMain, screen } from "electron";
 import SessionTracker from "./tracker.js";
-import WebSocketService from './websocket.js';
+import WebSocketService from "./websocket.js";
 
 let sessionTracker = new SessionTracker();
 let mainWindow;
 let intervalId = null;
 let booWindow = null;
-let notifWindow
+let notifWindow;
 let minimizedTime = null; // Track when the main window was minimized
 let booTimeout = null; // Store the timeout ID
 
@@ -24,21 +24,21 @@ function createBooWindow() {
     hasShaodw: false,
     show: false,
     webPreferences: {
-        nodeIntegration: true,
-        contextIsolation: false,
+      nodeIntegration: true,
+      contextIsolation: false,
     },
   });
 
   booWindow.loadFile("glow.html");
   booWindow.setIgnoreMouseEvents(true);
 
-  booWindow.once('ready-to-show', () => {
-      booWindow.show();
+  booWindow.once("ready-to-show", () => {
+    booWindow.show();
   });
 
-  booWindow.on('closed', () => {
-      booWindow = null; // Clear reference to boo window when it's closed
-  })
+  booWindow.on("closed", () => {
+    booWindow = null; // Clear reference to boo window when it's closed
+  });
 }
 
 function createNotifWindow() {
@@ -84,20 +84,18 @@ function checkMinimize() {
     if (!minimizedTime) {
       minimizedTime = Date.now();
     }
-      //Check if minimized for 3 seconds, if so make the boo window
+    //Check if minimized for 3 seconds, if so make the boo window
     if (Date.now() - minimizedTime >= 3000 && !booWindow) {
       createBooWindow();
       createNotifWindow();
-
     }
   } else {
-      minimizedTime = null;
-      if (booTimeout) clearTimeout(booTimeout)
+    minimizedTime = null;
+    if (booTimeout) clearTimeout(booTimeout);
   }
 }
 
 app.whenReady().then(() => {
-
   const primaryDisplay = screen.getPrimaryDisplay();
   const { width, height } = primaryDisplay.workAreaSize;
   mainWindow = new BrowserWindow({
@@ -114,8 +112,7 @@ app.whenReady().then(() => {
   mainWindow.loadFile("index.html");
 
   // Set up interval to check for minimize status
-    setInterval(checkMinimize, 1000);
-
+  setInterval(checkMinimize, 1000);
 });
 
 // Listen for "start-session" from renderer process
@@ -154,8 +151,10 @@ app.on("activate", () => {
       width: 800,
       height: 600,
       webPreferences: {
-        nodeIntegration: true,
-        contextIsolation: false,
+        preload: path.join(__dirname, "preload.js"), // Load preload script
+        contextIsolation: true, // Recommended for security
+        enableRemoteModule: false, // Disable remote module
+        nodeIntegration: false, // Prevent direct Node.js access in renderer
       },
     });
 

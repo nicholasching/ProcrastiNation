@@ -9,6 +9,7 @@ class Ai:
         self.model = genai.Client(api_key=os.environ["API_KEY"])
         self.mimeType = 'image/jpeg'
         self.profiles = []
+        self.loadProfiles()
     
     def loadProfiles(self):
         # Temp load prof 1
