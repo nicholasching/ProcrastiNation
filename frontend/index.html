@@ -50,6 +50,9 @@
           <div class="theme-3 theme" id="theme3"></div>
           <div class="theme-4 theme" id="theme4"></div>
         </div>
+        <div class="username-setting-element tile" id="logoutButton">
+          <p><i class="fa-solid fa-right-from-bracket"></i></p>
+        </div>
         <div class="username-setting-element tile" id="settingsButton">
           <p><i class="fa-solid fa-gear"></i></p>
         </div>
@@ -243,9 +246,23 @@
     }
 
     displayChart();
-    
+
+    const { ipcRenderer } = require('electron');
+
+    window.addEventListener('message', (event) => {
+      if (event.origin === 'http://localhost:5000') {
+        console.log('Received message from Flask:', event.data);
+        if (event.data.type === 'auth-success') {
+          console.log('Sending auth callback to main process');
+          ipcRenderer.send('auth-callback', event.data);
+        }
+      }
+    });
+
+    ipcRenderer.on('user-data', (event, userData) => {
+      console.log('Received user data in renderer:', userData);
+    });
 
     </script>
-    
 </body>
 </html>

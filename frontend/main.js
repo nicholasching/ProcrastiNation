@@ -1,14 +1,70 @@
 import { app, BrowserWindow, ipcMain, screen } from "electron";
-import SessionTracker from "./tracker.js";
-import WebSocketService from './websocket.js';
+import { shell } from 'electron';
+import Store from 'electron-store';
+import { auth0Config } from "./auth/config.js"
+import sessionTracker from './tracker.js'
 
-let sessionTracker = new SessionTracker();
 let mainWindow;
-let intervalId = null;
-let booWindow = null;
-let notifWindow
-let minimizedTime = null; // Track when the main window was minimized
-let booTimeout = null; // Store the timeout ID
+let booWindow;
+let notifWindow;
+let minimizedTime = null;
+
+const store = new Store({
+  name: 'auth',
+  defaults: {
+    userId: null,
+    userName: null
+  }
+});
+
+const API_URL = 'http://localhost:5000'; 
+
+function createMainWindow() {
+  const primaryDisplay = screen.getPrimaryDisplay();
+  const { width, height } = primaryDisplay.workAreaSize;
+  
+  mainWindow = new BrowserWindow({
+    width: width,
+    height: height,
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false
+    }
+  });
+
+  mainWindow.loadFile('index.html');
+  checkAuth();
+}
+
+function checkAuth() {
+  store.clear(); 
+  shell.openExternal(`${API_URL}/auth/login`);
+  if (mainWindow) {
+    mainWindow.hide();
+  }
+}
+
+ipcMain.on('auth-callback', (event, data) => {
+  const { user_info } = data;
+  store.set('userId', user_info.sub);
+  store.set('userName', user_info.name);
+  
+  if (mainWindow) {
+    mainWindow.show();
+    mainWindow.webContents.send('user-data', {
+      id: user_info.sub,
+      name: user_info.name
+    });
+  }
+});
+
+ipcMain.on('logout', () => {
+  store.clear();
+  shell.openExternal(`${API_URL}/auth/logout`);
+  if (mainWindow) {
+    mainWindow.hide();
+  }
+});
 
 function createBooWindow() {
   const primaryDisplay = screen.getPrimaryDisplay();
@@ -70,42 +126,29 @@ function createNotifWindow(){
 }
 
 function checkMinimize() {
-  if (mainWindow && mainWindow.isMinimized()) {
+  if (mainWindow?.isMinimized()) {
     if (!minimizedTime) {
       minimizedTime = Date.now();
     }
-      //Check if minimized for 3 seconds, if so make the boo window
     if (Date.now() - minimizedTime >= 3000 && !booWindow) {
       createBooWindow();
       createNotifWindow();
-
     }
   } else {
-      minimizedTime = null;
-      if (booTimeout) clearTimeout(booTimeout)
+    minimizedTime = null;
   }
 }
 
-app.whenReady().then(() => {
+app.whenReady().then(createMainWindow);
 
-  const primaryDisplay = screen.getPrimaryDisplay();
-  const { width, height } = primaryDisplay.workAreaSize;
-  mainWindow = new BrowserWindow({
-    x: 0,
-    y: 0,
-    width: width,
-    height: height,
-    webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
-    },
-  });
 
-  mainWindow.loadFile("index.html");
-
-  // Set up interval to check for minimize status
-    setInterval(checkMinimize, 1000);
-
+ipcMain.on('auth-success', (event, token) => {
+  if (authWindow) {
+    authWindow.close();
+  }
+  if (mainWindow) {
+    mainWindow.show();
+  }
 });
 
 // Listen for "start-session" from renderer process

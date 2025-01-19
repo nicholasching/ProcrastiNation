@@ -370,3 +370,11 @@ h2 {
     display: none;
     pointer-events: none;
 }
+
+#logoutButton {
+    cursor: pointer;
+}
+
+#logoutButton:hover {
+    background-color: var(--color-primary);
+}
