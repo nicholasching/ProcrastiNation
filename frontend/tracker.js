@@ -6,10 +6,24 @@ const store = new Store();
 
 function isProductive(result) {
   // Mock function to check if the app is productive
-  const productiveApps = ["Code", "Terminal",
-    "Firefox", "Notion", "Slack", "Trello", "Asana", "Microsoft Teams",
-    "Zoom", "Discord", "Stack Overflow", "Medium", "Wikipedia", 
-    "Microsoft Word", "Microsoft Excel", "Microsoft PowerPoint", "ChatGPT"
+  const productiveApps = [
+    "Code",
+    "Terminal",
+    "Firefox",
+    "Notion",
+    "Slack",
+    "Trello",
+    "Asana",
+    "Microsoft Teams",
+    "Zoom",
+    "Discord",
+    "Stack Overflow",
+    "Medium",
+    "Wikipedia",
+    "Microsoft Word",
+    "Microsoft Excel",
+    "Microsoft PowerPoint",
+    "ChatGPT",
   ];
 
   // List of productive URLs (could be expanded)
@@ -27,12 +41,12 @@ function isProductive(result) {
   ];
 
   // Extract the app name and URL from the result
-  const appName = result.owner.name;  // Example: "Code", "Safari"
+  const appName = result.owner.name; // Example: "Code", "Safari"
   const url = result.platform == "macos" ? result.url : result.title; // Example: "Personal - Instagram" (for web browsers)
 
   // Check if the app is in the productive apps list
   if (productiveApps.includes(appName)) {
-    return true;  // App or URL is considered productive
+    return true; // App or URL is considered productive
   }
 
   if (url && productiveApps.some((app) => url.includes(app))) {
@@ -40,8 +54,8 @@ function isProductive(result) {
   }
 
   // Check if the URL belongs to a productive domain
-  if (productiveDomains.some(pattern => pattern.test(url))) {
-    return true;  // Website is considered productive
+  if (productiveDomains.some((pattern) => pattern.test(url))) {
+    return true; // Website is considered productive
   }
 
   // Default assumption: Apps not matched in the lists are unproductive
@@ -49,7 +63,7 @@ function isProductive(result) {
 }
 
 class SessionTracker {
-  constructor() {
+  constructor(sessionId, userId) {
     // auto loads the activity log and checkpoints from the store
     this.activityLog = store.get("activityLog", {});
     this.checkpoints = store.get("checkpoints", []);
@@ -70,53 +84,55 @@ class SessionTracker {
     // this.socket = io('http://localhost:5000');
     // this.sessionId = sessionId;
     // this.userId = userId;
-    
+
     // // Productivity tracking
     // this.productiveStreak = 0;
     // this.productivityThreshold = 10; // 10sec
+  }
+
+  startSession() {
+    if (this.intervalId !== null) {
+      console.log("Session is already running!");
+      return;
     }
 
-    startSession() {
-      if (this.intervalId !== null) {
-        console.log("Session is already running!");
-        return;
-      }
-  
-      console.log("Session started...");
-      this.sessionStartTime = Date.now();
-      
-      this.intervalId = setInterval(async () => {
-        const result = await activeWindow();
-        if (!result) return;
-  
-        const currentApp = result.owner.name;
-        // this.currentProductive = isProductive(result);
-  
-        // if (this.currentProductive) {
-          // this.productiveStreak++;
-          // this.activeTime++;
-          
-        //   // Emit productivity update when threshold is reached
-        //   if (this.productiveStreak >= this.productivityThreshold) {
-        //     this.socket.emit('productivity_update', {
-        //       session_id: this.sessionId,
-        //       user_id: this.userId,
-        //       productive_time: this.productiveStreak,
-        //       app_name: currentApp
-        //     });
-        //     // Reset streak after broadcasting
-        //     this.productiveStreak = 0;
-        //   }
-        // } else {
+    console.log("Session started...");
+    this.sessionStartTime = Date.now();
+
+    this.intervalId = setInterval(async () => {
+      const result = await activeWindow();
+      if (!result) return;
+
+      const currentApp = result.owner.name;
+      this.currentProductive = isProductive(result);
+
+      if (this.currentProductive) {
+        this.productiveStreak++;
+        this.activeTime++;
+
+        // // Emit productivity update when threshold is reached
+        // if (this.productiveStreak >= this.productivityThreshold) {
+        //   this.socket.emit('productivity_update', {
+        //     session_id: this.sessionId,
+        //     user_id: this.userId,
+        //     productive_time: this.productiveStreak,
+        //     app_name: currentApp
+        //   });
+        //   // Reset streak after broadcasting
         //   this.productiveStreak = 0;
-        //   this.currentDowntime++;
-        //   if (this.currentDowntime > this.maxDowntime) {
-        //     this.maxDowntime = this.currentDowntime;
-        //   }
         // }
-        
-      // this.currentProductive = isProductive(result);
-      // console.log(`Current app: ${currentApp}, URL: ${result.url}, Productive: ${this.currentProductive}`);
+      } else {
+        this.productiveStreak = 0;
+        this.currentDowntime++;
+        if (this.currentDowntime > this.maxDowntime) {
+          this.maxDowntime = this.currentDowntime;
+        }
+      }
+
+      this.currentProductive = isProductive(result);
+      console.log(
+        `Current app: ${currentApp}, URL: ${result.url}, Productive: ${this.currentProductive}`
+      );
 
       // Update activity log
       if (this.previousApp && this.previousApp !== currentApp) {
@@ -134,12 +150,14 @@ class SessionTracker {
         const currentUrl = result.title;
 
         if (previousUrl !== currentUrl) {
-          console.log(`Switched from ${previousUrl} to ${currentUrl} within ${currentApp}`);
+          console.log(
+            `Switched from ${previousUrl} to ${currentUrl} within ${currentApp}`
+          );
           this.generateCheckpoint();
           this.currentDowntime = 0; // Reset downtime on switch
           // Check if user was distracted
           if (!this.currentProductive && this.prevProductive) {
-        this.unproductiveDurations++;
+            this.unproductiveDurations++;
           }
         }
 

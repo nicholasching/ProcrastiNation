@@ -1,3 +1,5 @@
+import SessionTracker from "./tracker";
+
 function sendRequest(endpoint, data) {
   return fetch(`http://localhost:5000/redis/${endpoint}`, {
     method: "POST",
@@ -19,9 +21,23 @@ function startSession(sessionId) {
 }
 
 function joinSession(userId, sessionId) {
+  // send a request to the backend to join the session
   return sendRequest("join_session", {
     user_id: userId,
     session_id: sessionId,
+  }).then(() => {
+    // when a user joins a session, start tracking their activity
+    const tracker = new SessionTracker(sessionId, userId);
+    tracker.startSession();
+
+    // periodically generate checkpoints and update the session
+    setInterval(() => {
+      tracker.generateCheckpoint();
+      const { activityLog, checkpoints } = tracker.loadData();
+      console.log("Activity Log:", activityLog);
+      console.log("Checkpoints:", checkpoints);
+      updateSession(userId, sessionId, checkpoints);
+    }, 1000);
   });
 }
 
@@ -33,11 +49,16 @@ function updateSession(userId, sessionId, checkpoint) {
   });
 }
 
+// this exits the session and stops tracking
 function logoutSession(userId, sessionId) {
+  tracker.endSession();
   return sendRequest("logout_user", { user_id: userId, session_id: sessionId });
 }
 
+// this ends the session (removes it from Redis backend)
 function endSession(sessionId) {
+  tracker.endSession();
+  tracker.clearData();
   return sendRequest("end_session", { session_id: sessionId });
 }
 
