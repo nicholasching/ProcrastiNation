@@ -93,7 +93,7 @@ body {
 
 .main-title {
     margin-bottom: 1%;
-    font-size: var(--font-bigger);
+    font-size: clamp(1.5rem, 1.5vw, 10rem);
 }
 
 p {
