@@ -1,25 +1,25 @@
 const { contextBridge, ipcRenderer } = require("electron");
-const Store = require("electron-store");
+const getWindows = require("get-windows");
 
-const store = new Store();
-
-contextBridge.exposeInMainWorld("store", {
-  set: (key, value) => store.set(key, value),
-  get: (key) => store.get(key),
-  delete: (key) => store.delete(key),
-});
-
-const { activeWindow } = require("get-windows");
-
-contextBridge.exposeInMainWorld("windowAPI", {
-  getActiveWindow: async () => {
-    const result = await activeWindow();
-    return result;
+// Make sure this runs before anything else
+contextBridge.exposeInMainWorld("windowTracker", {
+  getWindows: async () => {
+    try {
+      return await getWindows();
+    } catch (error) {
+      console.error("Error getting windows:", error);
+      return [];
+    }
   },
 });
 
 contextBridge.exposeInMainWorld("electronAPI", {
-  onNotificationData: (callback) =>
-    ipcRenderer.on("notification-data", (event, data) => callback(data)),
-  sendCloseNotification: () => ipcRenderer.send("close-notif-window"),
+  login: () => ipcRenderer.invoke("auth:login"),
+  // Add other auth methods as needed
+});
+
+// Add localStorage access
+contextBridge.exposeInMainWorld("storage", {
+  setItem: (key, value) => ipcRenderer.invoke("storage:set", key, value),
+  getItem: (key) => ipcRenderer.invoke("storage:get", key),
 });

@@ -1,4 +1,9 @@
 import SessionTracker from "./tracker.js";
+// import Store from "electron-store";
+// const store = new Store();
+
+localStorage.setItem("user_id", "user1");
+const tracker = new SessionTracker();
 
 function sendRequest(endpoint, data) {
   return fetch(`http://localhost:5000/redis/${endpoint}`, {
@@ -21,33 +26,33 @@ function startSession(sessionId) {
 }
 
 function joinSession(userId, sessionId) {
-  console.log("This join metho is invoked");
   // send a request to the backend to join the session
   return sendRequest("join_session", {
     user_id: userId,
     session_id: sessionId,
   }).then(() => {
     // when a user joins a session, start tracking their activity
-    const tracker = new SessionTracker(sessionId, userId);
     tracker.startSession();
 
     // periodically generate checkpoints and update the session
     setInterval(() => {
       tracker.generateCheckpoint();
-      const { activityLog, checkpoints } = tracker.loadData();
+      const { activityLog, checkpoint } = tracker.loadData();
       console.log("Activity Log:", activityLog);
-      console.log("Checkpoints:", checkpoints);
-      updateSession(userId, sessionId, checkpoints);
-    }, 1000);
+      console.log("Checkpoint:", checkpoint);
+      updateSession(userId, sessionId, checkpoint);
+    }, 10000);
   });
 }
 
 function updateSession(userId, sessionId, checkpoint) {
-  return sendRequest("update_session", {
+  const data = {
     user_id: userId,
     session_id: sessionId,
     checkpoint: checkpoint,
-  });
+  };
+  console.log(data);
+  return sendRequest("update_session", data);
 }
 
 // this exits the session and stops tracking
@@ -102,25 +107,38 @@ function fetchActiveSessions() {
 
 document.getElementById("createText").addEventListener("click", () => {
   const sessionId = document.getElementById("input").value;
+  console.log(sessionId);
+  localStorage.setItem("session_id", sessionId);
   if (sessionId) {
     startSession(sessionId).then(() => fetchActiveSessions());
   }
 });
 
-document.getElementById("joinText").addEventListener("click", () => {
-  const userId = store.get("user_id");
+document.getElementById("joinText").addEventListener("click", async () => {
+  const userId = localStorage.getItem("user_id");
   const sessionId = document.getElementById("input").value;
+
   if (userId && sessionId) {
+    console.log(`User ID: ${userId}, Session ID: ${sessionId}`);
     joinSession(userId, sessionId).then(() => fetchActiveSessions());
   }
 });
 
-document.getElementById("leaveText").addEventListener("click", () => {
-  const userId = store.get("user_id");
-  const sessionId = document.getElementById("input").value;
+document.getElementById("leaveText").addEventListener("click", async () => {
+  const userId = localStorage.getItem("user_id");
+  const sessionId = localStorage.getItem("session_id");
+
   if (userId && sessionId) {
+    console.log(`User ID: ${userId}, Session ID: ${sessionId}`);
     logoutSession(userId, sessionId).then(() => fetchActiveSessions());
   }
 });
 
-setInterval(fetchActiveSessions, 1000);
+document.getElementById("endText").addEventListener("click", () => {
+  const sessionId = localStorage.getItem("session_id");
+  if (sessionId) {
+    endSession(sessionId).then(() => fetchActiveSessions());
+  }
+});
+
+setInterval(fetchActiveSessions, 5000);

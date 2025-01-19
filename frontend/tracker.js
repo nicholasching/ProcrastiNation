@@ -1,4 +1,7 @@
-// import { io } from 'socket.io-client';
+// // import { io } from 'socket.io-client';
+// import Store from "electron-store";
+// const store = new Store();
+// import getActiveWindow from "get-windows";
 
 function isProductive(result) {
   // Mock function to check if the app is productive
@@ -59,10 +62,10 @@ function isProductive(result) {
 }
 
 class SessionTracker {
-  constructor(sessionId, userId) {
+  constructor(sessionId = null, userId = null) {
     // auto loads the activity log and checkpoints from the store
-    this.activityLog = store.get("activityLog", {});
-    this.checkpoints = store.get("checkpoints", []);
+    this.activityLog = JSON.parse(localStorage.getItem("activityLog")) || {};
+    this.checkpoints = JSON.parse(localStorage.getItem("checkpoints")) || [];
 
     // Initialize session variables
     this.intervalId = null;
@@ -96,7 +99,7 @@ class SessionTracker {
     this.sessionStartTime = Date.now();
 
     this.intervalId = setInterval(async () => {
-      const result = window.windowAPI.getActiveWindow();
+      const result = await window.windowTracker.getWindows();
       if (!result) return;
 
       const currentApp = result.owner.name;
@@ -214,15 +217,15 @@ class SessionTracker {
 
   // Function to save data
   saveData() {
-    store.set("activityLog", this.activityLog);
-    store.set("checkpoints", this.checkpoints);
+    localStorage.setItem("activityLog", JSON.stringify(this.activityLog));
+    localStorage.setItem("checkpoints", JSON.stringify(this.checkpoints));
   }
 
   // Function to load data
   loadData() {
     return {
       activityLog: this.activityLog,
-      checkpoints: this.checkpoints,
+      checkpoint: this.checkpoint,
     };
   }
 

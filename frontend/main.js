@@ -1,8 +1,9 @@
 import { app, BrowserWindow, ipcMain, screen } from "electron";
+import path from "path";
 import { getAIRoast, authenticateUser, getUserActivity } from "./api.js";
 import { playAudioFile } from "audic";
-import Store from "electron-store";
-const store = new Store();
+// import Store from "electron-store";
+// const store = new Store();
 import WebSocketService from "./websocket.js";
 
 let mainWindow;
@@ -25,8 +26,9 @@ function createBooWindow() {
     hasShaodw: false,
     show: false,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
+      nodeIntegration: false,
+      contextIsolation: true,
+      preload: path.join(__dirname, "preload.js"),
     },
   });
 
@@ -56,8 +58,9 @@ async function createNotifWindow() {
     resizable: false,
     show: false,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
+      nodeIntegration: false,
+      contextIsolation: true,
+      preload: path.join(__dirname, "preload.js"),
     },
   });
 
@@ -74,7 +77,7 @@ async function createNotifWindow() {
   });
 
   // Play the audio file (adjust based on your data)
-  await playAudioFile("audio/test.mp3");
+  await playAudioFile("audio/STH_FE.mp3");
   console.log("Played audio file");
 
   // Clear the reference to notifWindow when closed
@@ -116,9 +119,36 @@ app.whenReady().then(() => {
     width: width,
     height: height,
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
+      nodeIntegration: false,
+      contextIsolation: true,
     },
+  });
+
+  // For demo, directly load your backend auth URL
+  mainWindow.loadURL("http://localhost:5000/auth/login");
+
+  // Listen for navigation to your callback URL
+  mainWindow.webContents.on("will-navigate", (event, url) => {
+    if (url.includes("callback") || url.includes("dashboard")) {
+      // User has been authenticated, load your app
+      mainWindow.loadFile("index.html");
+
+      // Fake storing user data for demo
+      global.isAuthenticated = true;
+      global.userData = {
+        name: "Jet Chiang",
+        email: "jetjiang.ez@gmail.com",
+      };
+    }
+  });
+
+  // Handle auth login
+  ipcMain.handle("auth:login", async () => {
+    try {
+      return await authenticateUser();
+    } catch (error) {
+      throw error;
+    }
   });
 
   mainWindow.loadFile("index.html");
@@ -133,25 +163,49 @@ app.on("window-all-closed", () => {
   }
 });
 
+ipcMain.handle("store-get", (event, key) => {
+  return store.get(key);
+});
+
+ipcMain.handle("store-set", (event, key, value) => {
+  store.set(key, value);
+});
+
+// Handle active window request
+ipcMain.handle("get-active-window", async () => {
+  return await getActiveWindow();
+});
+
 app.on("activate", () => {
   if (BrowserWindow.getAllWindows().length === 0) {
     mainWindow = new BrowserWindow({
       width: 800,
       height: 600,
       webPreferences: {
-        preload: path.join(__dirname, "preload.js"), // Load preload script
-        contextIsolation: true, // Recommended for security
-        enableRemoteModule: false, // Disable remote module
-        nodeIntegration: false, // Prevent direct Node.js access in renderer
+        nodeIntegration: false,
+        contextIsolation: true,
+        preload: path.join(__dirname, "preload.js"),
       },
     });
 
     // const res = authenticateUser();
-    store.set("user_id", res.userId);
-    store.set("name", res.name);
+    // store.set("user_id", res.userId);
+    // store.set("name", res.name);
+
+    localStorage.setItem("user_id", "1");
+    localStorage.setItem("name", "John Doe");
 
     const activityData = getUserActivity();
     store.get("activityData", activityData);
+
+    // Handle auth login
+    ipcMain.handle("auth:login", async () => {
+      try {
+        return await authenticateUser();
+      } catch (error) {
+        throw error;
+      }
+    });
 
     mainWindow.loadFile("index.html");
   }
