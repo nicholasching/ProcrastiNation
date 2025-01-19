@@ -77,6 +77,45 @@ def get_user_activities(user_id):
         return jsonify(activities_list), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
+    
+from flask import Blueprint, request, jsonify
+from firebase_admin import firestore
+
+@firebase_bp.route('/activity/batch', methods=['GET'])
+def get_multiple_activities():
+    try:
+        # Get and validate IDs from request
+        data = request.get_json()
+        if not data or 'ids' not in data:
+            return jsonify({'error': 'No document IDs provided'}), 400
+            
+        doc_ids = data['ids']
+        if not isinstance(doc_ids, list):
+            return jsonify({'error': 'IDs must be provided as an array'}), 400
+            
+        # Convert all IDs to strings
+        doc_ids = [str(id) for id in doc_ids]
+        
+        db = firestore.client()
+        activity_ref = db.collection('activity')
+        
+        # Fetch all specified documents
+        activities = []
+        for doc_id in doc_ids:
+            doc = activity_ref.document(doc_id).get()
+            if doc.exists:
+                activities.append({
+                    'id': doc.id,
+                    **doc.to_dict()
+                })
+        
+        if not activities:
+            return jsonify({'error': 'No documents found'}), 404
+            
+        return jsonify(activities), 200
+        
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 @firebase_bp.route('/activity/<activity_id>', methods=['PUT'])
 def update_activity(activity_id):
