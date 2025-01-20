@@ -73,10 +73,7 @@ async function createNotifWindow() {
   // const data = await getAIRoast(store.get("user_id"), "chi", "instagram");
 
   // Show the notification window after it's ready
-  notifWindow.once("ready-to-show", () => {
-    notifWindow.webContents.send("notification-data", "apple");
-    notifWindow.show();
-  });
+  notifWindow.show();
 
   // Play the audio file (adjust based on your data)
   await playAudioFile("audio/STH_FE.mp3");
@@ -100,14 +97,17 @@ let downtime = 0;
 function checkMinimize() {
   if (!tracker.currentProductive) {
     downtime += 1;
+    if (!booWindow) {
+        createBooWindow();
+        
+    }
   } else {
     downtime = 0;
   }
 
   if (downtime >= 3) {
-    if (!booWindow) {
-      createBooWindow();
-      createNotifWindow();
+    if(!notifWindow){
+        createNotifWindow();
     }
   } else {
     if (booTimeout) clearTimeout(booTimeout);

@@ -67,7 +67,7 @@
       <div class="header-container">
         <div>
           <h1 class="main-title">
-            <span style="font-weight: bold">Procrasti</span>Nation
+            <span style="font-weight: bold">Task</span>Force
           </h1>
         </div>
         <div class="username-setting-container">
@@ -195,7 +195,8 @@
             <div class="box tile">
               <p>Motivational Quote</p>
               <h2 class="motivation-text" id="motivationText">
-                Motivation Text
+                All our dreams can come true, if we have the courage to pursue
+                them.
               </h2>
             </div>
             <div class="box tile">
@@ -203,30 +204,134 @@
               <h2><span class="color">20 minutes</span> of Discord today</h2>
             </div>
           </div>
-<!-- Add this where you want the chat to appear -->
-        <div class="chat-container tile">
-          <p>Session Chat</p>
-          <div class="messages" id="messages"></div>
-          <div class="chat-input-container">
-            <input 
-              type="text" 
-              id="messageInput" 
-              class="chat-input tile" 
-              placeholder="Type a message..."
-              style="color: white"
-            />
-            <button id="sendMessageBtn" class="chat-send tile">
-              <i class="fa-solid fa-paper-plane"></i>
-            </button>
+          <!-- Add this where you want the chat to appear -->
+          <div class="chat-container tile">
+            <p>Session Chat</p>
+            <div class="messages" id="messages"></div>
+            <div class="chat-input-container">
+              <input
+                type="text"
+                id="messageInput"
+                class="chat-input tile"
+                placeholder="Type a message..."
+                style="color: white"
+              />
+              <button id="sendMessageBtn" class="chat-send tile">
+                <i class="fa-solid fa-paper-plane"></i>
+              </button>
+            </div>
           </div>
-        </div>
         </div>
       </div>
 
-      <!-- <button id="start-session">Start Session</button>
-    <button id="end-session">End Session</button>
-    <button id="clear-session">Clean Session</button> -->
+      <div class="post-title">
+        <button class="post-button post-title-element" id="postButton">
+          +
+        </button>
+        <h2 class="post-title-element">Post</h2>
+      </div>
+
+      <script>
+        document.getElementById("postButton").addEventListener("click", () => {
+          fetch("http://localhost:5000/notification/create-post", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              user_id: "user_123",
+              name: "Chi",
+              focus_time: 80,
+              achievement: "Anything related to a hackathon or coding",
+            }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              console.log("Success:", data);
+              fetchAndDisplayPosts();
+            })
+            .catch((error) => {
+              console.error("Error:", error);
+            });
+        });
+      </script>
+
+      <div id="posts-container">
+        <!-- Example of a post that will be dynamically populated -->
+        <div class="post-container tile">
+          <h1 class="post-heading">Post Title</h1>
+          <p class="post-text">Text for post</p>
+          <p class="user-name">User Name</p>
+          <!-- New field for displaying user's name -->
+          <div class="image-container tile"></div>
+        </div>
+      </div>
     </div>
+
+    <script>
+      // Function to fetch and populate the posts
+      async function fetchAndDisplayPosts() {
+        try {
+          const response = await fetch(
+            "http://localhost:5000/notification/top-posts"
+          );
+          const posts = await response.json();
+
+          // Get the container to hold the posts
+          const postsContainer = document.getElementById("posts-container");
+
+          // Clear any existing posts in the container (optional)
+          postsContainer.innerHTML = "";
+
+          // Loop through each post and create a new post element
+          posts.forEach((post) => {
+            const postElement = document.createElement("div");
+            postElement.classList.add("post-container", "tile");
+
+            // Create and populate the post heading (title)
+            const postHeading = document.createElement("h1");
+            postHeading.classList.add("post-heading");
+            postHeading.textContent = post.post_title;
+
+            // Create and populate the post text (content)
+            const postText = document.createElement("p");
+            postText.classList.add("post-text");
+            postText.textContent = post.post_text;
+
+            // Create and populate the user name field
+            const userName = document.createElement("p");
+            userName.classList.add("user-name");
+            userName.textContent = `Posted by: ${post.name}`;
+
+            // Optionally, you can also display the achievement if needed
+            // const postAchievement = document.createElement('p');
+            // postAchievement.textContent = `Achievement: ${post.achievement}`;
+
+            // Append the heading, text, and user name to the post element
+            postElement.appendChild(postHeading);
+            postElement.appendChild(postText);
+            postElement.appendChild(userName); // Add the user name to the post
+
+            // Add the post to the posts container
+            postsContainer.appendChild(postElement);
+          });
+        } catch (error) {
+          console.error("Error fetching posts:", error);
+        }
+      }
+
+      // Call the function when the page loads
+      window.onload = fetchAndDisplayPosts;
+    </script>
+
+    <style>
+      .user-name {
+        font-style: italic;
+        font-size: 1em;
+        color: #777;
+        margin-top: 10px;
+      }
+    </style>
 
     <script>
       const settingsButton = document.getElementById("settingsButton");

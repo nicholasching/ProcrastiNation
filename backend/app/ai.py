@@ -1,4 +1,4 @@
-import os
+import os, json
 from google import genai
 from google.genai import types
 from dotenv import load_dotenv, dotenv_values
@@ -66,3 +66,36 @@ class Ai:
                 ),
             )
         return response.text
+
+    def genLinkedInPost(self, name, current_focus, achievement):
+        response = self.model.models.generate_content(
+            model='gemini-2.0-flash-exp',
+            contents=[
+                types.Part.from_text(
+                    f"Your task is to write a LinkedIn-style post that highlights the user's focus and achievement in a professional and motivational tone. "
+                    f"The user's name is {name}, they focused for {current_focus} minutes in their session, and their key accomplishment was: {achievement}. "
+                    f"The post should inspire others by recognizing their effort and encouraging continued growth. "
+                    f"Keep the tone professional, celebratory, and relatable, while making the user sound accomplished and driven."
+                )
+            ],
+            config=types.GenerateContentConfig(
+                response_mime_type="application/json",
+                response_schema={
+                    "required": ["body", "title"],
+                    "properties": {
+                        "body": {"type": "STRING"},
+                        "title": {"type": "STRING"},
+                    },
+                    "type": "OBJECT",
+                },
+                system_instruction=(
+                    "Write a LinkedIn-style post that is concise (50-80 words), inspiring, and professional. "
+                    "Emphasize focus, dedication, and the value of the achievement in a way that resonates with a professional audience."
+                ),
+                temperature=1.0,
+            ),
+        )
+
+        res = json.loads(response.text)
+        return {"title": res["title"], "body": res["body"]}
+        

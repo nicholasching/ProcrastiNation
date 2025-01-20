@@ -127,5 +127,3 @@ def delete_activity(activity_id):
         return jsonify({'message': 'Activity deleted successfully'}), 200
     except Exception as e:
         return jsonify({'error': str(e)}), 500
-
-

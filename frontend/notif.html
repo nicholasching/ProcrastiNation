@@ -25,16 +25,23 @@
         window.electronAPI.sendCloseNotification();
       });
 
-      const { ipcRenderer } = require("electron");
+      // Create a list of prompts that got selected automatically
+      const prompts = [
+        "Your friend Alex has been working for 20 minutes already! Don't fall behind while you're on Instagram.",
+        "Why are you on Discord when Alex is already 30 minutes ahead of you?",
+        "Stop procrastinating on Instagram! Alex has been productive for 45 minutes now.",
+        "Feeling left out? Alex has been working for 60 minutes while you're on Twitter.",
+        "Get back to work! Alex has a 90-minute head start while you're on Netflix.",
+      ];
 
-      ipcRenderer.on("notification-data", (event, data) => {
-        console.log("Received notification-data:", data); // Debug log
-        const { text } = data;
-        const notiTextElement = document.getElementById("notiText");
-        if (notiTextElement) {
-          notiTextElement.textContent = text;
-        }
-      });
+      // Select a random prompt from the list
+      const randomPrompt = prompts[Math.floor(Math.random() * prompts.length)];
+
+      // Display the selected prompt
+      const notiTextElement = document.getElementById("notiText");
+      if (notiTextElement) {
+        notiTextElement.textContent = randomPrompt;
+      }
     </script>
   </body>
 </html>

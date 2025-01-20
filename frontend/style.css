@@ -1,594 +1,644 @@
 body {
-    font-family: "Roboto Mono", serif;
-    letter-spacing: -0.1ch;
-    background-color: #0e0e0e;
-    color: rgb(255, 255, 255);
-    padding: 3% 3% 0 3%;
-    height: 100vh;
-    overflow-y: hidden;
+  font-family: "Roboto Mono", serif;
+  letter-spacing: -0.1ch;
+  background-color: #0e0e0e;
+  color: rgb(255, 255, 255);
+  padding: 3% 3% 0 3%;
+  height: 100vh;
 }
 
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-weight: 400;
-    /* border: 1px solid white; */
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-weight: 400;
+  /* border: 1px solid white; */
 }
 
 :root {
-    --box-shadow-standard: 0px 0px 10px 1px rgb(9, 9, 9);
-    --border-standard: 1px solid #282828;
-    --border-radius-standard: 10px;
+  --box-shadow-standard: 0px 0px 10px 1px rgb(9, 9, 9);
+  --border-standard: 1px solid #282828;
+  --border-radius-standard: 10px;
 
-    --font-bigger: clamp(1rem, 1.25vw, 3rem);
-    --font-standard: clamp(0.25rem, 1.1vw, 5rem);
+  --font-bigger: clamp(1rem, 1.25vw, 3rem);
+  --font-standard: clamp(0.25rem, 1.1vw, 5rem);
 
-    --color-text: #767676;
+  --color-text: #767676;
 
-    --color-primary: #df5e0e;
-    --color-secondary: rgba(255, 122, 33, 0.16);
-    --color-tertiary: #ff6200;
+  --color-primary: #df5e0e;
+  --color-secondary: rgba(255, 122, 33, 0.16);
+  --color-tertiary: #ff6200;
 }
 
 ::placeholder {
-    color: white;
-    opacity: 0.5;
-  }
-  
+  color: white;
+  opacity: 0.5;
+}
 
 @keyframes fade-in {
-    from {
-        opacity: 0;
-        transform: translateY(-50px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(-50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes visible-animation {
-    from {
-        opacity: 0;
-        transform: translateX(30px);
-    }
-    to {
-        opacity: 1;
-        transform: translateX(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 @keyframes not-visible-animation {
-    from {
-        opacity: 1;
-        transform: translateX(0);
-    }
-    to {
-        opacity: 0;
-        transform: translateX(-30px);
-    }
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
 }
 
 @keyframes session-visible-animation {
-    from {
-        opacity: 0;
-        transform: translateY(-20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes session-not-visible-animation {
-    from {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    to {
-        opacity: 0;
-        transform: translateY(20px);
-    }
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(20px);
+  }
 }
 
-
 .main-title {
-    font-size: clamp(1.5rem, 1.5vw, 10rem);
+  font-size: clamp(1.5rem, 1.5vw, 10rem);
 }
 
 p {
-    font-size: var(--font-standard);
-    color: var(--color-text);
+  font-size: var(--font-standard);
+  color: var(--color-text);
 }
 
 h2 {
-    font-size: var(--font-bigger);
+  font-size: var(--font-bigger);
 }
 
 .color {
-    color: var(--color-primary);
+  color: var(--color-primary);
 }
 
 .dashboard-container {
-    display: flex;
-    gap: 2%;
+  display: flex;
+  gap: 2%;
+  margin-bottom: 4%;
 }
 
 .header-container {
-    width: 100%;
-    margin-bottom: 2%;
-    display: flex;
-    justify-content: space-between;
+  width: 100%;
+  margin-bottom: 2%;
+  display: flex;
+  justify-content: space-between;
 }
 
 .username-setting-container {
-    justify-content: end;
-    display: flex;
-    width: 100%;
-    gap: 1%;
+  justify-content: end;
+  display: flex;
+  width: 100%;
+  gap: 1%;
 }
 
 .username-setting-element {
-    padding: 1%;
-    transition: 0.2s;
-    &:hover {
-        scale: 1.05;
-        cursor: grab;
-    }
+  padding: 1%;
+  transition: 0.2s;
+  &:hover {
+    scale: 1.05;
+    cursor: grab;
+  }
 }
 
 .username-text {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
 }
 
 .settings-menu {
-    display: flex;
-    gap: 20px;
-    align-items: center;
+  display: flex;
+  gap: 20px;
+  align-items: center;
 }
 
 .theme {
-    display: flex;
-    justify-content: center;
-    border-radius: 100%;
-    width: 15px;
-    height: 15px;
-    transition: 0.2s;
-    &:hover {
-        scale: 1.25;
-        cursor: grab;
-    }
+  display: flex;
+  justify-content: center;
+  border-radius: 100%;
+  width: 15px;
+  height: 15px;
+  transition: 0.2s;
+  &:hover {
+    scale: 1.25;
+    cursor: grab;
+  }
 }
 
 .theme-1 {
-    background-color: #df5e0e;
+  background-color: #df5e0e;
 }
 
 .theme-2 {
-    background-color: rgb(0, 123, 255);
+  background-color: rgb(0, 123, 255);
 }
 
 .theme-3 {
-    background-color: rgb(131, 227, 72);
+  background-color: rgb(131, 227, 72);
 }
 
 .theme-4 {
-    background-color: red;
+  background-color: red;
 }
 
 .left-container {
-    width: 50%;
+  width: 50%;
 }
 
 .right-container {
-    width: 50%;
+  width: 50%;
 }
 
 .tile {
-    border-radius: var(--border-radius-standard);
-    background-color: #000000;
-    border: var(--border-standard);
-    box-shadow: var(--box-shadow-standard);
+  border-radius: var(--border-radius-standard);
+  background-color: #000000;
+  border: var(--border-standard);
+  box-shadow: var(--box-shadow-standard);
 }
 
 .color-tile {
-    background: linear-gradient(180deg, var(--color-primary) 0, rgba(233,195,148,1) 90%);
+  background: linear-gradient(
+    180deg,
+    var(--color-primary) 0,
+    rgba(233, 195, 148, 1) 90%
+  );
 }
 
 .graph-container {
-    display: flex;
-    width: 100%;
-    gap: 2%;
-    margin-bottom: 3%;
-    animation: fade-in 1s forwards;
+  display: flex;
+  width: 100%;
+  gap: 2%;
+  margin-bottom: 3%;
+  animation: fade-in 1s forwards;
 }
 
 .bar-graph {
-    width: 100%;
-    max-width: 80%;
-    padding: 3%;
+  width: 100%;
+  max-width: 80%;
+  padding: 3%;
 }
 
 .legend {
-    width: 20.5%;
-    padding: 3%;
+  width: 20.5%;
+  padding: 3%;
 }
 
 .legend-subtitle {
-    margin-bottom: 20%;
+  margin-bottom: 20%;
 }
 
 .legend-person {
-    margin-bottom: 30%;
-    display: flex;
-    align-items: center;
-    border-radius: 3px;
-    gap: 10%;
-    padding: 5% 10%;
-    transition: 0.1s;
-    &:hover {
-        scale: 1.1;
-        background-color: #6b6b6b;
-    }
+  margin-bottom: 30%;
+  display: flex;
+  align-items: center;
+  border-radius: 3px;
+  gap: 10%;
+  padding: 5% 10%;
+  transition: 0.1s;
+  &:hover {
+    scale: 1.1;
+    background-color: #6b6b6b;
+  }
 }
 
 .legend-person-color {
-    height: 10px;
-    width: 10px;
-    border-radius: 100%;
+  height: 10px;
+  width: 10px;
+  border-radius: 100%;
 }
 
 .box-container {
-    display: flex;
-    gap: 2%;
-    margin-bottom: 3.5%;
-    animation: fade-in 1s forwards;
+  display: flex;
+  gap: 2%;
+  margin-bottom: 3.5%;
+  animation: fade-in 1s forwards;
 }
 
-.box { 
-    flex: 1;
-    padding: 3%;
+.box {
+  flex: 1;
+  padding: 3%;
 }
 
 .leaderboard-container {
-    width: 100%;
-    padding: 3%;
-    animation: fade-in 1s forwards;
+  width: 100%;
+  padding: 3%;
+  animation: fade-in 1s forwards;
 }
 
 .leaderboard-title {
-    margin-bottom: 2%;
+  margin-bottom: 2%;
 }
 
 .leaderboard-person {
-    width: 100%;
-    margin-bottom: 1%;
-    padding: 1%;
+  width: 100%;
+  margin-bottom: 1%;
+  padding: 1%;
 }
 
 .app-stats-container {
-    width: 100%;
-    padding: 5%;
-    margin-bottom: 4%;
-    animation: fade-in 1s forwards;
+  width: 100%;
+  padding: 5%;
+  margin-bottom: 4%;
+  animation: fade-in 1s forwards;
 }
 
 .app-stats-title {
-    margin-bottom: 5%;
+  margin-bottom: 5%;
 }
 
 .app {
-    display: flex;
-    gap: 2%;
-    margin-bottom: 2%;
+  display: flex;
+  gap: 2%;
+  margin-bottom: 2%;
 }
 
 .session-container {
-    padding: 3%;
-    z-index: 1000;
-    position: absolute;
-    right: 0;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-right: 3%;
-    margin-top: 5%;
-    width: 46%;
-    gap: 5%;
-    height: 265px;
-    padding-bottom: 5%;
+  padding: 3%;
+  z-index: 1000;
+  position: absolute;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-right: 3%;
+  margin-top: 5%;
+  width: 46%;
+  gap: 5%;
+  height: 265px;
+  padding-bottom: 5%;
 }
 
 .options-container {
-    display: flex;
-    flex-direction: column;
-    width: 40%;
-    padding: 3%;
-    text-align: center;
-    box-shadow: var(--box-shadow-standard);
-    border: var(--border-standard);
-    border-radius: var(--border-radius-standard);
-    height: 100%;
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  padding: 3%;
+  text-align: center;
+  box-shadow: var(--box-shadow-standard);
+  border: var(--border-standard);
+  border-radius: var(--border-radius-standard);
+  height: 100%;
 }
 
 .create-text {
-    color: var(--color-primary);
-    margin-bottom: 10%;
-    transition: 0.3s;
-    &:hover {
-        scale: 1.1;
-        cursor: grab;
-    }
+  color: var(--color-primary);
+  margin-bottom: 10%;
+  transition: 0.3s;
+  &:hover {
+    scale: 1.1;
+    cursor: grab;
+  }
 }
 
 .leave-text {
-    color: grey;
-    transform: translateY(25px);
-    transition: 0.3s;
-    &:hover {
-        scale: 1.1;
-        cursor: grab;
-    }
+  color: grey;
+  transform: translateY(25px);
+  transition: 0.3s;
+  &:hover {
+    scale: 1.1;
+    cursor: grab;
+  }
 }
 
 .join-input {
-    width: 75%;
-    margin: 5% auto;
-    box-shadow: var(--box-shadow-standard);
-    border: var(--border-standard);
-    border-radius: 5px;
-    transition: 0.3s;
-    background-color: var(--color-primary);
-    text-align: center;
-    color: white;
-    padding: 5%;
-    &:hover {
-        scale: 1.1;
-        cursor: grab;
-    }
+  width: 75%;
+  margin: 5% auto;
+  box-shadow: var(--box-shadow-standard);
+  border: var(--border-standard);
+  border-radius: 5px;
+  transition: 0.3s;
+  background-color: var(--color-primary);
+  text-align: center;
+  color: white;
+  padding: 5%;
+  &:hover {
+    scale: 1.1;
+    cursor: grab;
+  }
 }
 
 .session-list-container {
-    display: flex;
-    justify-content: center;
-    box-shadow: var(--box-shadow-standard);
-    border: var(--border-standard);
-    border-radius: var(--border-radius-standard);
-    height: 100%;
-    padding: 3%;
-    width: 60%;
-    overflow-y: scroll;
-    scrollbar-width: thin;
-    scrollbar-color: #333333 rgba(0, 0, 0, 0);
-    overflow-x: hidden;
-    height: 100%;
+  display: flex;
+  justify-content: center;
+  box-shadow: var(--box-shadow-standard);
+  border: var(--border-standard);
+  border-radius: var(--border-radius-standard);
+  height: 100%;
+  padding: 3%;
+  width: 60%;
+  overflow-y: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: #333333 rgba(0, 0, 0, 0);
+  overflow-x: hidden;
+  height: 100%;
 }
 
 .session {
-    margin-bottom: 2%;
-    padding: 1%;
-    width: 100%;
-    transition: 0.3s;
-    &:hover {
-        cursor: grab;
-        transform: translateX(20px);
-        scale: 1.05;
-        color: var(--color-primary);
-    }
+  margin-bottom: 2%;
+  padding: 1%;
+  width: 100%;
+  transition: 0.3s;
+  &:hover {
+    cursor: grab;
+    transform: translateX(20px);
+    scale: 1.05;
+    color: var(--color-primary);
+  }
 }
 
 .arrow {
-    color: var(--color-primary);
-    position: absolute;
-    bottom: 30px;
-    right: 30px;
-    transition: 0.2s;
-    &:hover {
-        scale: 1.5;
-        transform: rotate(-45deg);
-    }
+  color: var(--color-primary);
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  transition: 0.2s;
+  &:hover {
+    scale: 1.5;
+    transform: rotate(-45deg);
+  }
 }
 
 .progress-container {
-    width: 100%;
-    padding: 10.25%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    animation: fade-in 1s forwards;
-    gap: 10%;
-  }
+  width: 100%;
+  padding: 10.25%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fade-in 1s forwards;
+  gap: 10%;
+}
 
-  .progress-circle {
-    width: 200px;
-    height: 200px;
-    background: conic-gradient(var(--color-primary) 0%, var(--color-primary) 0%, #ccc 0%);
-    border-radius: 50%;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .progress-mask {
-    width: 180px;
-    height: 180px;
-    background-color: black;
-    border-radius: 50%;
-    position: absolute;
-  }
-  
-  .progress-percent {
-    position: absolute;
-    font-size: 24px;
-    font-weight: bold;
-  }
+.progress-circle {
+  width: 200px;
+  height: 200px;
+  background: conic-gradient(
+    var(--color-primary) 0%,
+    var(--color-primary) 0%,
+    #ccc 0%
+  );
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .progress-text {
-    width: 30%;
-  }
-  
+.progress-mask {
+  width: 180px;
+  height: 180px;
+  background-color: black;
+  border-radius: 50%;
+  position: absolute;
+}
+
+.progress-percent {
+  position: absolute;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.progress-text {
+  width: 30%;
+}
+
 .end-text {
-    position: absolute;
-    transform: translateY(150px);
-    color: grey;
-    font-size: 0.8rem;
-    transition: 0.2s;
-    &:hover {
-        scale: 1.01;
-        color: red;
-    }
+  position: absolute;
+  transform: translateY(150px);
+  color: grey;
+  font-size: 0.8rem;
+  transition: 0.2s;
+  &:hover {
+    scale: 1.01;
+    color: red;
+  }
 }
 
 .black {
-    color: black;
-    font-weight: 400;
+  color: black;
+  font-weight: 400;
 }
 
 .progress-container-2 {
-    width: 100%;
-    padding: 5.75%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+  width: 100%;
+  padding: 5.75%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
-  .progress-circle-2 {
-    width: 200px;
-    height: 200px;
-    background: conic-gradient(var(--color-primary) 0%, #ccc 0%);
-    border-radius: 50%;
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 20px;
-  }
+.progress-circle-2 {
+  width: 200px;
+  height: 200px;
+  background: conic-gradient(var(--color-primary) 0%, #ccc 0%);
+  border-radius: 50%;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 20px;
+}
 
-  .progress-mask-2 {
-    width: 180px;
-    height: 180px;
-    background-color: black;
-    border-radius: 50%;
-    position: absolute;
-  }
+.progress-mask-2 {
+  width: 180px;
+  height: 180px;
+  background-color: black;
+  border-radius: 50%;
+  position: absolute;
+}
 
-  .progress-percent-2 {
-    position: absolute;
-    font-size: 24px;
-    font-weight: bold;
-  }
+.progress-percent-2 {
+  position: absolute;
+  font-size: 24px;
+  font-weight: bold;
+}
 
-  .timer-controls {
-    display: flex;
-    gap: 10px;
-    justify-content: center;
-  }
+.timer-controls {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
 
-  .timer-input {
-    width: 60px;
-    text-align: center;
-    font-size: 18px;
-    padding: 5px;
-    border: none;
-    border-radius: 5px;
-  }
+.timer-input {
+  width: 60px;
+  text-align: center;
+  font-size: 18px;
+  padding: 5px;
+  border: none;
+  border-radius: 5px;
+}
 
-  .timer-button {
-    padding: 10px 20px;
-    font-size: 16px;
-    border: none;
-    border-radius: 5px;
-    background-color: var(--color-primary);
-    color: white;
-    cursor: pointer;
-    transition: 0.3s;
-  }
+.timer-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--color-primary);
+  color: white;
+  cursor: pointer;
+  transition: 0.3s;
+}
 
-  .timer-button:hover {
-    scale: 1.05;
-  }
+.timer-button:hover {
+  scale: 1.05;
+}
 
 .session-visible {
-    animation: session-visible-animation 0.5s forwards;
+  animation: session-visible-animation 0.5s forwards;
 }
 
 .session-not-visible {
-    animation: session-not-visible-animation 0.5s forwards;
-    display: none;
-    pointer-events: none;
+  animation: session-not-visible-animation 0.5s forwards;
+  display: none;
+  pointer-events: none;
 }
 
 .not-visible {
-    animation: not-visible-animation 0.5s forwards;
-    visibility: hidden;
-    pointer-events: none;
-    opacity: 0;
-    display: none;
+  animation: not-visible-animation 0.5s forwards;
+  visibility: hidden;
+  pointer-events: none;
+  opacity: 0;
+  display: none;
 }
 
 .visible {
-    animation: visible-animation 0.5s forwards;
-    visibility: visible; /* Ensures it's shown when visible */
-    pointer-events: auto;
-    opacity: 1;
+  animation: visible-animation 0.5s forwards;
+  visibility: visible; /* Ensures it's shown when visible */
+  pointer-events: auto;
+  opacity: 1;
 }
 
 .light-mode {
-    background-color: white;
-    color: black;
+  background-color: white;
+  color: black;
 }
 
 .light-mode-tile {
-    background-color: white;
-    box-shadow: 0px 0px 10px 1px rgb(223, 223, 223);
-    border: 1px solid rgb(203, 203, 203);
+  background-color: white;
+  box-shadow: 0px 0px 10px 1px rgb(223, 223, 223);
+  border: 1px solid rgb(203, 203, 203);
 }
 
 .light-mode-text {
-    color: black;
+  color: black;
 }
 
 .chat-container {
-    padding: 20px;
-    margin-top: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  padding: 20px;
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: fade-in 1s forwards;
+}
+
+.messages {
+  height: 65px;
+  overflow-y: auto;
+  margin: 10px 0;
+}
+
+.chat-input-container {
+  display: flex;
+  gap: 10px;
+}
+
+.chat-input {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: var(--color-background-darker);
+}
+
+.chat-send {
+  padding: 10px 20px;
+  background: var(--color-primary);
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+.messages {
+  margin: 5px 0;
+  padding: 5px 10px;
+  background: var(--color-background-darker);
+  border-radius: 5px;
+}
+
+.post-title-element {
+  font-size: 2rem;
+  background-color: transparent;
+  border: 0;
+  color: white;
+}
+
+.post-title {
+  font-size: 2rem;
+  margin-right: auto;
+  width: 12%;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 2%;
+}
+
+.post-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  transition: 0.2s;
+  border: 1px solid grey;
+  padding: 5%;
+  &:hover {
+    scale: 1.1;
   }
-  
-  .messages {
-    height: 200px;
-    overflow-y: auto;
-    margin: 10px 0;
-  }
-  
-  .chat-input-container {
-    display: flex;
-    gap: 10px;
-  }
-  
-  .chat-input {
-    flex: 1;
-    padding: 10px;
-    border: none;
-    background: var(--color-background-darker);
-  }
-  
-  .chat-send {
-    padding: 10px 20px;
-    background: var(--color-primary);
-    border: none;
-    color: white;
-    cursor: pointer;
-  }
-  
-  .messages p {
-    margin: 5px 0;
-    padding: 5px 10px;
-    background: var(--color-background-darker);
-    border-radius: 5px;
-  }
+}
+
+.post-container {
+  margin-bottom: 3%;
+  padding: 5%;
+  height: 30vh;
+  width: 100%;
+}
+
+.image-container {
+  width: 80%;
+  margin: 5% auto 0 auto;
+  height: 60vh;
+}

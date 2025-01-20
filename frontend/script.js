@@ -1,4 +1,4 @@
-import SessionTracker from "./tracker.js";
+// import SessionTracker from "./tracker.js";
 // import Store from "electron-store";
 // const store = new Store();
 
@@ -26,19 +26,19 @@ function startSession(sessionId) {
 
 function joinSession(userId, sessionId) {
   return sendRequest("join_session", {
-      user_id: userId,
-      session_id: sessionId,
+    user_id: userId,
+    session_id: sessionId,
   }).then(() => {
-      const tracker = new SessionTracker(sessionId, userId);
-      tracker.startSession();
-      
-      initializeChat(userId, sessionId);
-      
-      setInterval(() => {
-          tracker.generateCheckpoint();
-          const { activityLog, checkpoints } = tracker.loadData();
-          updateSession(userId, sessionId, checkpoints);
-      }, 1000);
+    const tracker = new SessionTracker(sessionId, userId);
+    tracker.startSession();
+
+    initializeChat(userId, sessionId);
+
+    setInterval(() => {
+      tracker.generateCheckpoint();
+      const { activityLog, checkpoints } = tracker.loadData();
+      updateSession(userId, sessionId, checkpoints);
+    }, 1000);
   });
 }
 
@@ -131,168 +131,180 @@ document.getElementById("leaveText").addEventListener("click", async () => {
   }
 });
 
-document.getElementById('sendMessageBtn')?.addEventListener('click', () => {
-  const messageInput = document.getElementById('messageInput');
+document.getElementById("sendMessageBtn")?.addEventListener("click", () => {
+  const messageInput = document.getElementById("messageInput");
   broadcastMessage(messageInput.value);
-  messageInput.value = ''; 
+  messageInput.value = "";
 });
 
 setInterval(fetchActiveSessions, 1000);
 
-const socket = io('http://localhost:5000', {
-  path: '/socket.io',
-  transports: ['websocket', 'polling']
+const socket = io("http://localhost:5000", {
+  path: "/socket.io",
+  transports: ["websocket", "polling"],
 });
-socket.on('connect', () => {
-    console.log('Connected to Socket.IO server!');
-});
-
-socket.on('connect_error', (error) => {
-    console.log('Socket.IO connection error:', error);
+socket.on("connect", () => {
+  console.log("Connected to Socket.IO server!");
 });
 
-socket.on('session_message', (data) => {
-    console.log('Received message:', data);
-    const messagesDiv = document.getElementById('messages');
-    messagesDiv.innerHTML += `<p>${data.user_id}: ${data.message}</p>`;
+socket.on("connect_error", (error) => {
+  console.log("Socket.IO connection error:", error);
+});
+
+socket.on("session_message", (data) => {
+  console.log("Received message:", data);
+  const messagesDiv = document.getElementById("messages");
+  messagesDiv.innerHTML += `<p>${data.user_id}: ${data.message}</p>`;
 });
 
 function broadcastMessage(message) {
-    const userId = "chi"
-    const sessionId = document.getElementById("input").value;  
-    
-    socket.emit('broadcast_message', {
-        session_id: sessionId,
-        user_id: userId,
-        message: message
-    });
+  const userId = "chi";
+  const sessionId = document.getElementById("input").value;
+
+  socket.emit("broadcast_message", {
+    session_id: sessionId,
+    user_id: userId,
+    message: message,
+  });
 }
 
 async function getCurrentSession(userId, sessionId) {
-    return fetch(`http://localhost:5000/redis/get_session?user_id=${userId}&session_id=${sessionId}`)
-        .then(res => res.json())
-        .then(data => {
-            console.log('Got session data:', data);
-            return data.user_data;
-        });
+  return fetch(
+    `http://localhost:5000/redis/get_session?user_id=${userId}&session_id=${sessionId}`
+  )
+    .then((res) => res.json())
+    .then((data) => {
+      console.log("Got session data:", data);
+      return data.user_data;
+    });
 }
 
-socket.on('session_message', (data) => {
-  console.log('Received message:', data);
-  const messagesDiv = document.getElementById('messages');
+socket.on("session_message", (data) => {
+  console.log("Received message:", data);
+  const messagesDiv = document.getElementById("messages");
   messagesDiv.innerHTML += `<p>${data.user_id}: ${data.message}</p>`;
   // Auto-scroll to bottom
   messagesDiv.scrollTop = messagesDiv.scrollHeight;
 });
 
 function sendMessage() {
-  const messageInput = document.getElementById('messageInput');
+  const messageInput = document.getElementById("messageInput");
   const message = messageInput.value.trim();
   const sessionId = document.getElementById("input").value;
   const userId = store.get("user_id");
 
   if (!sessionId) {
-      console.error('No session ID found');
-      return;
+    console.error("No session ID found");
+    return;
   }
 
   if (!userId) {
-      console.error('No user ID found');
-      return;
+    console.error("No user ID found");
+    return;
   }
 
   if (message) {
-      console.log('Sending message:', {
-          session_id: sessionId,
-          user_id: userId,
-          message: message
-      });
+    console.log("Sending message:", {
+      session_id: sessionId,
+      user_id: userId,
+      message: message,
+    });
 
-      socket.emit('broadcast_message', {
-          session_id: sessionId,
-          user_id: userId,
-          message: message
-      }, (response) => {
-          // Handle acknowledgment
-          if (response && response.status === 'sent') {
-              console.log('Message sent successfully');
-              messageInput.value = '';
-          } else {
-              console.error('Failed to send message:', response);
-          }
-      });
+    socket.emit(
+      "broadcast_message",
+      {
+        session_id: sessionId,
+        user_id: userId,
+        message: message,
+      },
+      (response) => {
+        // Handle acknowledgment
+        if (response && response.status === "sent") {
+          console.log("Message sent successfully");
+          messageInput.value = "";
+        } else {
+          console.error("Failed to send message:", response);
+        }
+      }
+    );
   }
 }
 
 function initializeChat(userId, sessionId) {
-  socket.emit('join', { session_id: sessionId });
-  
+  socket.emit("join", { session_id: sessionId });
+
   loadExistingMessages(sessionId);
-  
+
   // Set up message sending
-  const messageInput = document.getElementById('messageInput');
-  const sendButton = document.getElementById('sendMessageBtn');
-  const messagesDiv = document.getElementById('messages');
-  
+  const messageInput = document.getElementById("messageInput");
+  const sendButton = document.getElementById("sendMessageBtn");
+  const messagesDiv = document.getElementById("messages");
+
   if (sendButton) {
-      sendButton.addEventListener('click', () => {
-          const message = messageInput.value.trim();
-          if (message) {
-              sendMessage(userId, sessionId, message);
-              messageInput.value = '';
-          }
-      });
+    sendButton.addEventListener("click", () => {
+      const message = messageInput.value.trim();
+      if (message) {
+        sendMessage(userId, sessionId, message);
+        messageInput.value = "";
+      }
+    });
   }
-  
+
   if (messageInput) {
-      messageInput.addEventListener('keypress', (e) => {
-          if (e.key === 'Enter') {
-              const message = messageInput.value.trim();
-              if (message) {
-                  sendMessage(userId, sessionId, message);
-                  messageInput.value = '';
-              }
-          }
-      });
+    messageInput.addEventListener("keypress", (e) => {
+      if (e.key === "Enter") {
+        const message = messageInput.value.trim();
+        if (message) {
+          sendMessage(userId, sessionId, message);
+          messageInput.value = "";
+        }
+      }
+    });
   }
-  
+
   // Update the socket.io message handler
-  socket.on('session_message', (data) => {
-      if (messagesDiv) {
-          const messageElement = document.createElement('div');
-          messageElement.className = 'message-item';
-          messageElement.innerHTML = `
+  socket.on("session_message", (data) => {
+    if (messagesDiv) {
+      const messageElement = document.createElement("div");
+      messageElement.className = "message-item";
+      messageElement.innerHTML = `
               <span class="message-user">${data.user_id}</span>
               <span class="message-text">${data.message}</span>
-              <span class="message-time">${new Date(data.timestamp).toLocaleTimeString()}</span>
+              <span class="message-time">${new Date(
+                data.timestamp
+              ).toLocaleTimeString()}</span>
           `;
-          messagesDiv.appendChild(messageElement);
-          messagesDiv.scrollTop = messagesDiv.scrollHeight;
-      }
+      messagesDiv.appendChild(messageElement);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
   });
 }
 
 async function loadExistingMessages(sessionId) {
   try {
-      const response = await fetch(`http://localhost:5000/redis/get_messages?session_id=${sessionId}`);
-      const data = await response.json();
-      console.log("Messages:" (data));
-      
-      if (data.messages) {
-          const messagesDiv = document.getElementById('messages');
-          data.messages.forEach(msg => {
-              const messageElement = document.createElement('div');
-              messageElement.className = 'message-item';
-              messageElement.innerHTML = `
+    const response = await fetch(
+      `http://localhost:5000/redis/get_messages?session_id=${sessionId}`
+    );
+    const data = await response.json();
+    console.log("Messages:"(data));
+
+    if (data.messages) {
+      const messagesDiv = document.getElementById("messages");
+      data.messages.forEach((msg) => {
+        const messageElement = document.createElement("div");
+        messageElement.className = "message-item";
+        messageElement.innerHTML = `
                   <span class="message-user">${msg.user_id}</span>
                   <span class="message-text">${msg.message}</span>
-                  <span class="message-time">${new Date(msg.timestamp).toLocaleTimeString()}</span>
+                  <span class="message-time">${new Date(
+                    msg.timestamp
+                  ).toLocaleTimeString()}</span>
               `;
-              messagesDiv.appendChild(messageElement);
-          });
-          messagesDiv.scrollTop = messagesDiv.scrollHeight;
-      }
+        messagesDiv.appendChild(messageElement);
+      });
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
   } catch (error) {
-      console.error('Error loading messages:', error);
+    console.error("Error loading messages:", error);
   }
 }
