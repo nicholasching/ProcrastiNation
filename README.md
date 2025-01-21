@@ -1,12 +1,8 @@
 # Task Force
 
-Ever gone on LinkedIn and all you saw was “I’m happy to share that I will be working at `{Google, Microsoft, Meta, Tesla, etc}` this summer”. You probably thought to yourself, _“Wow, I really have to start working harder.”_
+Ever gone on LinkedIn and all you saw was “I’m happy to share that I will be working at `{Google, Microsoft, Meta, Tesla, etc}` this summer”. You probably thought to yourself, _“Wow, I really have to start working harder.”_ That feeling – the urge to level up your own productivity – is a powerful motivator. We recognized this common experience and decided to harness it.
 
-That feeling – the urge to level up your own productivity – is a powerful motivator.We recognized this common experience and decided to harness it.
-
-Introducing TaskForce, a **desktop app** designed to tackle procrastination head-on by reframing your perspective on productivity and accountability.
-
-Now not only can you track your own productivity, but you can also see how your friends are doing, get motivated in real time, and roast each other using genAI.
+Introducing TaskForce, a desktop app designed to tackle procrastination head-on by reframing your perspective on productivity and accountability. **Create and join study sessions with your friends to roast each other and brag about locking in with GenAI and system-tracking informed analytics in real time!!**
 
 ![homepage](resource/home.png)
 
